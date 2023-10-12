@@ -21,6 +21,7 @@ from modules.driver_manager import WebDriverManager
 # own packages
 # import database_app
 import functions
+import data
 
 # get data from .env file
 load_dotenv()
@@ -54,13 +55,14 @@ def add_new_announces():
     print("------------------Add_crf_training_Start------------------")
     # connection to website
     # TODO add url
-    driver.get()
-    driver.implicitly_wait(5)
-    # check an agree the terms section exists
-    time.sleep(2)
-    # TODO if concerned add css class
-    check_accept_section()
-    time.sleep(2)
+    for department_number in data.french_department_numbers:
+        driver.get(f"https://inscription-formation.croix-rouge.fr/?type=PSC1&dep={department_number}")
+        driver.implicitly_wait(5)
+        # check an agree the terms section exists
+        time.sleep(2)
+        # TODO if concerned add css class
+        check_accept_section()
+        time.sleep(2)
 
     print("------------------Add_crf_training_End------------------")
 
