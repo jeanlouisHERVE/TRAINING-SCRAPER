@@ -1,0 +1,5 @@
+12/10/2023
+Mise en place de l'architecture 
+
+
+# TODO migrer la BDD de sqlite3 à postgresql
