@@ -1,0 +1,69 @@
+
+stages:
+  - lint
+  # - compile
+  # - test
+  # - build
+  # - publish
+
+variables:
+  CI_PROJECT_DIR_WINDOWS: "c:\\Users\\jeanl\\OneDrive\\Bureau\\IMMO-SCRAPER"
+  CI_PROJECT_DIR_LINUX: "/home/jean-louis/Bureau/IMMO-SCRAPER"
+
+lint:
+  stage: lint
+  image: python:3.9
+  script:
+    - python -m pip install --upgrade pip
+    - pip install flake8
+    - flake8 . 
+
+# before_script:
+#   - |
+#     if [ "$(uname)" == "Linux" ]; then
+#       export DATABASE_PATH="$CI_PROJECT_DIR_LINUX/database/immoscraper.db"
+#     elif [ "$(uname)" == "Windows" ]; then
+#       export DATABASE_PATH="$CI_PROJECT_DIR_WINDOWS\\database\\immoscraper.db"
+#     else
+#       echo "Unsupported OS"
+#       exit 1
+#     fi
+
+# unit_tests:
+#   stage: test
+#   image: python:3.9 
+#   script:
+#     - python -m pip install --upgrade pip
+#     - python -m pip install -r requirements.txt
+#     - export DATABASE_PATH="$CI_PROJECT_DIR\\database\\immoscraper.db"
+#     - python -m unittest discover -s tests -p 'test_*.py'
+
+# build:
+#   stage: build
+#   image: centos
+#   script:
+#     - set -x
+#     - rm -rf ~/rpmbuild/*
+#     - sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+#     - sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+#     - yum update -y
+#     - yum install -y python3-pip rpm python3-devel python3-setuptools
+#     - python3 --version
+#     - python3 -m pip install --upgrade pip
+#     - python3 -m pip install setuptools wheel
+#     - python3 setup.py sdist bdist_wheel
+#     - yum install -y rpm-build
+#     - mkdir -p ~/rpmbuild/SOURCES
+#     - cp /builds/jeanlouisHERVE/immo-scraper/dist/python-immoscraper-*.tar.gz ~/rpmbuild/SOURCES/
+#     - rpmbuild -ba --verbose /builds/jeanlouisHERVE/immo-scraper/immoscraper.spec
+#     - cp -R ~/rpmbuild $CI_PROJECT_DIR/
+#   artifacts:
+#     paths:
+#       - rpmbuild/RPMS/x86_64/*.rpm
+#   when: on_success
+
+# publish:
+#   stage: publish
+#   script:
+#     - curl -u $ARTIFACTORY_USERNAME:$ARTIFACTORY_PASSWORD -X PUT $ARTIFACTORY_URL/$ARTIFACTORY_REPO/ -T rpmbuild/RPMS/x86_64/*.rpm
+
