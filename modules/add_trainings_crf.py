@@ -16,7 +16,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 # other modules
 from dotenv import load_dotenv
-from modules.driver_manager import WebDriverManager
+from driver_manager import WebDriverManager
 
 # own packages
 # import database_app
@@ -50,6 +50,22 @@ def check_accept_section(cssSelector: str):
     ):
         print("KO : no accept part")
 
+# functions
+def check_accept_section(cssSelector: str):
+
+    driver.implicitly_wait(5)
+    try:
+        accept = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, cssSelector))
+                )
+        accept.click()
+    except (
+        NoSuchElementException,
+        StaleElementReferenceException,
+        TimeoutException
+    ):
+        print("KO : no accept part")
+
 
 def add_trainings():
     print("------------------Add_crf_training_Start------------------")
@@ -58,6 +74,8 @@ def add_trainings():
     for department_number in data.french_department_numbers:
         driver.get(f"https://inscription-formation.croix-rouge.fr/?type=PSC1&dep={department_number}")
         driver.implicitly_wait(5)
+        check_accept_section("button.onetrust-close-btn-handler")
+        input()
         # check an agree the terms section exists
         try:
             trainingsList = driver.find_element(By.CSS_SELECTOR, "div.liste-formations")
@@ -68,7 +86,7 @@ def add_trainings():
 
             # Now, the 'pairs' list contains pairs of (h2, ul) elements within the div with class "list"
             for pair in pairs:
-                h2 = pair[0]
+                h2 = pair[0].text
                 ul = pair[1]
 
                 # Find li elements within the ul

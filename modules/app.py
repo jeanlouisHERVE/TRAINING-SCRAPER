@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # packages
-import os
+
 
 # other modules
 from dotenv import load_dotenv
 
 # own packages
 import database_app
-import modules.add_trainings_crf as add_trainings_crf
+import add_trainings_crf
 
 database_app.create_tables()
 
@@ -28,7 +28,7 @@ def start_prompt():
     user_input = input(menu_prompt)
     while user_input != "2":
         if user_input == "1":
-            add_trainings_crf.add_new_announces()
+            add_trainings_crf.add_trainings()
         else:
             print("Invalid input, please try again!")
 
