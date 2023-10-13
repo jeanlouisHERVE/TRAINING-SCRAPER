@@ -65,7 +65,19 @@ def add_trainings():
             pairs = []
             for i in range(0, len(trainings), 2):
                 pairs.append((trainings[i], trainings[i + 1]))
-            print(pairs)
+
+            # Now, the 'pairs' list contains pairs of (h2, ul) elements within the div with class "list"
+            for pair in pairs:
+                h2 = pair[0]
+                ul = pair[1]
+
+                # Find li elements within the ul
+                li_elements = pair[1].find_elements(By.XPATH, ".//li")
+                lis = [li.text for li in li_elements]
+
+                print(f"H2: {h2}")
+                print(f"UL: {ul}")
+                print("LI elements:", lis)
         except NoSuchElementException:
             print("KO : no list of trainings on this page")
 
