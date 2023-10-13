@@ -50,36 +50,21 @@ def check_accept_section(cssSelector: str):
     ):
         print("KO : no accept part")
 
-# functions
-def check_accept_section(cssSelector: str):
-
-    driver.implicitly_wait(5)
-    try:
-        accept = WebDriverWait(driver, 5).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, cssSelector))
-                )
-        accept.click()
-    except (
-        NoSuchElementException,
-        StaleElementReferenceException,
-        TimeoutException
-    ):
-        print("KO : no accept part")
-
 
 def add_trainings():
     print("------------------Add_crf_training_Start------------------")
     # connection to website
-    # TODO add url
     for department_number in data.french_department_numbers:
         driver.get(f"https://inscription-formation.croix-rouge.fr/?type=PSC1&dep={department_number}")
         driver.implicitly_wait(5)
         check_accept_section("button.onetrust-close-btn-handler")
-        input()
+        print("department_number :", department_number)
         # check an agree the terms section exists
         try:
             trainingsList = driver.find_element(By.CSS_SELECTOR, "div.liste-formations")
+            print("trainingsList", trainingsList)
             trainings = trainingsList.find_elements(By.XPATH, ".//h2/following-sibling::ul")
+            print("trainings", trainings)
             pairs = []
             for i in range(0, len(trainings), 2):
                 pairs.append((trainings[i], trainings[i + 1]))
@@ -96,6 +81,7 @@ def add_trainings():
                 print(f"H2: {h2}")
                 print(f"UL: {ul}")
                 print("LI elements:", lis)
+                input()
         except NoSuchElementException:
             print("KO : no list of trainings on this page")
 

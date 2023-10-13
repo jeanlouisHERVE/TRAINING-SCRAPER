@@ -12,20 +12,18 @@ load_dotenv()
 WINDOWS_DATABASE_PATH = "c:\\Users\\jeanl\\OneDrive\\Bureau\\TRAINING-SCRAPER\\database\\immoscraper.db"
 LINUX_DATABASE_PATH = "/home/jean-louis/Bureau/TRAINING-SCRAPER/database/immoscraper.db"
 
-# # Distinguishing between different operating systems:
-# if platform.system() == "Linux":
-#     connection = sqlite3.connect(LINUX_DATABASE_PATH)
-# elif platform.system() == "Windows":
-#     connection = sqlite3.connect(WINDOWS_DATABASE_PATH)
-# else:
-#     print("OS not compatible")
-
 connection = sqlite3.connect(WINDOWS_DATABASE_PATH)
 
 # create database
 CREATE_TRAINING_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
                                 id INTEGER NOT NULL PRIMARY KEY,
+                                town STRING,
+                                training_title,
+                                training_dates,
+                                training_department,
                                 date_add_to_db TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"""
+# TODO table pour les dates des formations + horaires
+# TODO table pour les dates des types de formation
 
 # add data
 INSERT_TRAINING = """INSERT INTO trainings () VALUES (?, ?, ?, ?, ?, ?, ?, ?);"""
