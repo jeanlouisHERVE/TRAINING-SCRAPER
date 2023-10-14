@@ -21,12 +21,14 @@ CREATE_TRAINING_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
                                 training_title,
                                 training_department,
                                 date_add_to_db TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                                FOREIGN KEY (department_id) REFERENCES dates(id) ON DELETE CASCADE,
+                                FOREIGN KEY (department_name) REFERENCES departments(name),
                                 FOREIGN KEY (date_id) REFERENCES dates(id) ON DELETE CASCADE,
                                 FOREIGN KEY (type_id) REFERENCES types(id));"""
 
 CREATE_TRAINING_DATE_TABLE = """CREATE TABLE IF NOT EXISTS dates (
-                                    id INTEGER,
+                                    training_id INTEGER,
+                                    hour_start TEXT,
+                                    hour_end TEXT,
                                     date TIMESTAMP);"""
 
 CREATE_TRAINING_TYPE_TABLE = """CREATE TABLE IF NOT EXISTS types (
