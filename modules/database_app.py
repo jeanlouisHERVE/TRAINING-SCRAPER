@@ -15,7 +15,7 @@ LINUX_DATABASE_PATH = "/home/jean-louis/Bureau/TRAINING-SCRAPER/database/immoscr
 connection = psycopg2.connect(WINDOWS_DATABASE_PATH)
 
 # create database
-CREATE_TRAINING_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
+CREATE_COURSE_TABLE = """CREATE TABLE IF NOT EXISTS courses (
                                 id INTEGER NOT NULL PRIMARY KEY,
                                 places_available INTEGER,
                                 places_total INTEGER,
@@ -27,77 +27,87 @@ CREATE_TRAINING_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
                                 FOREIGN KEY (date_id) REFERENCES dates(id) ON DELETE CASCADE,
                         );"""
 
-CREATE_TRAINING_DATE_TABLE = """CREATE TABLE IF NOT EXISTS dates (
+CREATE_DATE_TABLE = """CREATE TABLE IF NOT EXISTS dates (
                                     training_id INTEGER,
                                     hour_start TEXT,
                                     hour_end TEXT,
                                     date TIMESTAMP);"""
 
-CREATE_TRAINING_TYPE_TABLE = """CREATE TABLE IF NOT EXISTS types (
+CREATE_TRAINING_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
                                     id INTEGER NOT NULL PRIMARY KEY,
                                     name TEXT UNIQUE,
                                     description LONGTEXT);"""
 
-CREATE_DEPARTMENT = """CREATE TABLE IF NOT EXISTS departments (
+CREATE_DEPARTMENT_TABLE = """CREATE TABLE IF NOT EXISTS departments (
                             id INTEGER NOT NULL PRIMARY KEY,
                             number INTEGER PRIMARY KEY,
                             name TEXT UNIQUE);"""
 
-CREATE_TOWN = """CREATE TABLE IF NOT EXISTS departments (
+CREATE_TOWN_TABLE = """CREATE TABLE IF NOT EXISTS towns (
                             id INTEGER NOT NULL PRIMARY KEY,
                             postcode TEST,
                             name TEXT UNIQUE);"""
 
-CREATE_ORGANISMS = """CREATE TABLE IF NOT EXISTS organisms (
+CREATE_ORGANISMS_TABLE = """CREATE TABLE IF NOT EXISTS organisms (
                             id INTEGER NOT NULL PRIMARY KEY,
                             name TEXT UNIQUE);"""
 
 # add data
-INSERT_TRAINING = """
-                    INSERT INTO trainings (places_available, places_total, date_add_to_db, town_id, type_id,
+INSERT_COURSE = """
+                    INSERT INTO courses (places_available, places_total, date_add_to_db, town_id, training_id,
                     organism_id, department_id, date_id)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;"""
 INSERT_DATE = ""
-INSERT_TYPE = ""
+INSERT_TRAINING = ""
 INSERT_DEPARTMENT = ""
 INSERT_TOWN = ""
 INSERT_ORGANISM = ""
 
 # get data
-GET_TRAINING = "SELECT * FROM properties #####;"
+GET_COURSE = "SELECT * FROM properties #####;"
 GET_TYPE = "SELECT * FROM types #####;"
 
 # update data
-UPDATE_TRAINING = """UPDATE trainings
+UPDATE_COURSE = """UPDATE trainings
                     SET price = ?
                     WHERE id = ?;"""
 
 
 # delete data
+DELETE_COURSE_TABLE = "DELETE FROM courses;"
+DELETE_DATE_TABLE = "DELETE FROM dates;"
 DELETE_TRAINING_TABLE = "DELETE FROM trainings;"
+DELETE_DEPARTMENT_TABLE = "DELETE FROM departments;"
+DELETE_TOWN_TABLE = "DELETE FROM towns;"
+DELETE_ORGANISMS_TABLE = "DELETE FROM organism;"
 
 
 def create_tables():
     with connection:
         print("Creating tables...")
+        connection.execute(CREATE_COURSE_TABLE)
+        connection.execute(CREATE_DATE_TABLE)
         connection.execute(CREATE_TRAINING_TABLE)
-        connection.execute(CREATE_TRAINING_DATE_TABLE)
-        connection.execute(CREATE_TRAINING_TYPE_TABLE)
-        connection.execute(CREATE_DEPARTMENT)
-        connection.execute(CREATE_TOWN)
-        connection.execute(CREATE_ORGANISMS)
+        connection.execute(CREATE_DEPARTMENT_TABLE)
+        connection.execute(CREATE_TOWN_TABLE)
+        connection.execute(CREATE_ORGANISMS_TABLE)
         print("Tables created.")
 
 
 def delete_tables():
     with connection:
         print("deleting tables...")
+        connection.execute(DELETE_COURSE_TABLE)
+        connection.execute(DELETE_DATE_TABLE)
         connection.execute(DELETE_TRAINING_TABLE)
+        connection.execute(DELETE_DEPARTMENT_TABLE)
+        connection.execute(DELETE_TOWN_TABLE)
+        connection.execute(DELETE_ORGANISMS_TABLE)
         print("Tables deleted.")
 
 
-def add_training(
+def add_course(
         places_available: int,
         places_total: int,
         date_add_to_db: float,
@@ -107,7 +117,7 @@ def add_training(
         department_id: int,
         date_id: int):
     with connection:
-        cursor = connection.execute(INSERT_TRAINING, (
+        cursor = connection.execute(INSERT_COURSE, (
                                                         places_available,
                                                         places_total,
                                                         date_add_to_db,
@@ -120,6 +130,26 @@ def add_training(
                                     )
         last_inserted_id = cursor.lastrowid
     return last_inserted_id
+
+
+def add_training_date():
+    pass
+
+
+def add_training_type():
+    pass
+
+
+def add_training_date():
+    pass
+
+
+def add_training_date():
+    pass
+
+
+def add_training_date():
+    pass
 
 
 # def get_training_by_url(url: str):
