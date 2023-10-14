@@ -19,19 +19,33 @@ CREATE_TRAINING_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
                                 id INTEGER NOT NULL PRIMARY KEY,
                                 town STRING,
                                 training_title,
-                                training_dates,
                                 training_department,
-                                date_add_to_db TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"""
-# TODO table pour les dates des formations + horaires
-# TODO table pour les dates des types de formation
+                                date_add_to_db TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                FOREIGN KEY (department_id) REFERENCES dates(id) ON DELETE CASCADE,
+                                FOREIGN KEY (date_id) REFERENCES dates(id) ON DELETE CASCADE,
+                                FOREIGN KEY (type_id) REFERENCES types(id));"""
+
+CREATE_TRAINING_DATE_TABLE = """CREATE TABLE IF NOT EXISTS dates (
+                                    id INTEGER,
+                                    date TIMESTAMP);"""
+
+CREATE_TRAINING_TYPE_TABLE = """CREATE TABLE IF NOT EXISTS types (
+                                    id INTEGER NOT NULL PRIMARY KEY,
+                                    name TEXT UNIQUE);"""
+
+CREATE_DEPARTMENT = """CREATE TABLE IF NOT EXISTS departments (
+                            number INTEGER PRIMARY KEY,
+                            name TEXT UNIQUE);"""
 
 # add data
-INSERT_TRAINING = """INSERT INTO trainings () VALUES (?, ?, ?, ?, ?, ?, ?, ?);"""
-
+INSERT_TRAINING = "INSERT INTO trainings () VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+INSERT_DATE = ""
+INSERT_TYPE = ""
+INSERT_DEPARTMENT = ""
 
 # get data
 GET_TRAINING = "SELECT * FROM properties #####;"
-
+GET_TYPE = "SELECT * FROM types #####;"
 
 # update data
 UPDATE_TRAINING = """UPDATE trainings
