@@ -20,10 +20,14 @@ CREATE_TRAINING_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
                                 town STRING,
                                 training_title,
                                 training_department,
+                                places_available INTEGER,
+                                places_total INTEGER,
                                 date_add_to_db TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                                FOREIGN KEY (department_name) REFERENCES departments(name),
+                                FOREIGN KEY (type_name) REFERENCES types(name),
+                                FOREIGN KEY (organism_name) REFERENCES organisms(name),
+                                FOREIGN KEY (department_number) REFERENCES departments(number),
                                 FOREIGN KEY (date_id) REFERENCES dates(id) ON DELETE CASCADE,
-                                FOREIGN KEY (type_id) REFERENCES types(id));"""
+                        );"""
 
 CREATE_TRAINING_DATE_TABLE = """CREATE TABLE IF NOT EXISTS dates (
                                     training_id INTEGER,
@@ -36,7 +40,17 @@ CREATE_TRAINING_TYPE_TABLE = """CREATE TABLE IF NOT EXISTS types (
                                     name TEXT UNIQUE);"""
 
 CREATE_DEPARTMENT = """CREATE TABLE IF NOT EXISTS departments (
+                            id INTEGER NOT NULL PRIMARY KEY,
                             number INTEGER PRIMARY KEY,
+                            name TEXT UNIQUE);"""
+
+CREATE_TOWN = """CREATE TABLE IF NOT EXISTS departments (
+                            id INTEGER NOT NULL PRIMARY KEY,
+                            postcode TEST,
+                            name TEXT UNIQUE);"""
+
+CREATE_ORGANISMS = """CREATE TABLE IF NOT EXISTS organisms (
+                            id INTEGER NOT NULL PRIMARY KEY,
                             name TEXT UNIQUE);"""
 
 # add data
