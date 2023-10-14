@@ -1,8 +1,8 @@
-import sqlite3
 # import platform
+import psycopg2
 
 # other modules
-
+from psycopg2 import sql
 from dotenv import load_dotenv
 
 # get data from .env file
@@ -12,20 +12,18 @@ load_dotenv()
 WINDOWS_DATABASE_PATH = "c:\\Users\\jeanl\\OneDrive\\Bureau\\TRAINING-SCRAPER\\database\\immoscraper.db"
 LINUX_DATABASE_PATH = "/home/jean-louis/Bureau/TRAINING-SCRAPER/database/immoscraper.db"
 
-connection = sqlite3.connect(WINDOWS_DATABASE_PATH)
+connection = psycopg2.connect(WINDOWS_DATABASE_PATH)
 
 # create database
 CREATE_TRAINING_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
                                 id INTEGER NOT NULL PRIMARY KEY,
-                                town STRING,
-                                training_title,
-                                training_department,
                                 places_available INTEGER,
                                 places_total INTEGER,
                                 date_add_to_db TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                                FOREIGN KEY (type_name) REFERENCES types(name),
-                                FOREIGN KEY (organism_name) REFERENCES organisms(name),
-                                FOREIGN KEY (department_number) REFERENCES departments(number),
+                                FOREIGN KEY (town_id) REFERENCES towns(id),
+                                FOREIGN KEY (type_id) REFERENCES types(id),
+                                FOREIGN KEY (organism_id) REFERENCES organisms(id),
+                                FOREIGN KEY (department_id) REFERENCES departments(id),
                                 FOREIGN KEY (date_id) REFERENCES dates(id) ON DELETE CASCADE,
                         );"""
 
@@ -37,7 +35,8 @@ CREATE_TRAINING_DATE_TABLE = """CREATE TABLE IF NOT EXISTS dates (
 
 CREATE_TRAINING_TYPE_TABLE = """CREATE TABLE IF NOT EXISTS types (
                                     id INTEGER NOT NULL PRIMARY KEY,
-                                    name TEXT UNIQUE);"""
+                                    name TEXT UNIQUE,
+                                    description LONGTEXT);"""
 
 CREATE_DEPARTMENT = """CREATE TABLE IF NOT EXISTS departments (
                             id INTEGER NOT NULL PRIMARY KEY,
@@ -54,10 +53,16 @@ CREATE_ORGANISMS = """CREATE TABLE IF NOT EXISTS organisms (
                             name TEXT UNIQUE);"""
 
 # add data
-INSERT_TRAINING = "INSERT INTO trainings () VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+INSERT_TRAINING = """
+                    INSERT INTO trainings (places_available, places_total, date_add_to_db, town_id, type_id,
+                    organism_id, department_id, date_id)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    RETURNING id;"""
 INSERT_DATE = ""
 INSERT_TYPE = ""
 INSERT_DEPARTMENT = ""
+INSERT_TOWN = ""
+INSERT_ORGANISM = ""
 
 # get data
 GET_TRAINING = "SELECT * FROM properties #####;"
@@ -77,6 +82,11 @@ def create_tables():
     with connection:
         print("Creating tables...")
         connection.execute(CREATE_TRAINING_TABLE)
+        connection.execute(CREATE_TRAINING_DATE_TABLE)
+        connection.execute(CREATE_TRAINING_TYPE_TABLE)
+        connection.execute(CREATE_DEPARTMENT)
+        connection.execute(CREATE_TOWN)
+        connection.execute(CREATE_ORGANISMS)
         print("Tables created.")
 
 
@@ -87,13 +97,29 @@ def delete_tables():
         print("Tables deleted.")
 
 
-# def add_training()
-#     with connection:
-#         cursor = connection.execute(INSERT_TRAINING, (
-#                                         )
-#                                     ),
-#         last_inserted_id = cursor.lastrowid
-#     return last_inserted_id
+def add_training(
+        places_available: int,
+        places_total: int,
+        date_add_to_db: float,
+        town_id: int,
+        type_id: int,
+        organism_id: int,
+        department_id: int,
+        date_id: int):
+    with connection:
+        cursor = connection.execute(INSERT_TRAINING, (
+                                                        places_available,
+                                                        places_total,
+                                                        date_add_to_db,
+                                                        town_id,
+                                                        type_id,
+                                                        organism_id,
+                                                        department_id,
+                                                        date_id
+                                                        )
+                                    )
+        last_inserted_id = cursor.lastrowid
+    return last_inserted_id
 
 
 # def get_training_by_url(url: str):
