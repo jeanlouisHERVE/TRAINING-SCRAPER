@@ -2,10 +2,10 @@
 import psycopg2
 
 # other modules
-from psycopg2 import sql
+# from psycopg2 import sql
 from dotenv import load_dotenv
 from contextlib import contextmanager
-from psycopg2.extras import execute_values
+# from psycopg2.extras import execute_values
 
 # get data from .env file
 load_dotenv()
