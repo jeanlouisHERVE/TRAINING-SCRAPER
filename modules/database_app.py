@@ -96,12 +96,12 @@ def get_cursor(connection):
 def create_tables():
     with get_cursor(connection) as cursor:
         print("Creating tables...")
-        connection.execute(CREATE_COURSE_TABLE)
-        connection.execute(CREATE_DATE_TABLE)
-        connection.execute(CREATE_TRAINING_TABLE)
-        connection.execute(CREATE_DEPARTMENT_TABLE)
-        connection.execute(CREATE_TOWN_TABLE)
-        connection.execute(CREATE_ORGANISMS_TABLE)
+        cursor.execute(CREATE_COURSE_TABLE)
+        cursor.execute(CREATE_DATE_TABLE)
+        cursor.execute(CREATE_TRAINING_TABLE)
+        cursor.execute(CREATE_DEPARTMENT_TABLE)
+        cursor.execute(CREATE_TOWN_TABLE)
+        cursor.execute(CREATE_ORGANISMS_TABLE)
         print("Tables created.")
 
 
@@ -195,6 +195,7 @@ def add_town(
         last_inserted_id = cursor.lastrowid
     return last_inserted_id
 
+
 def add_organism(
                     name: str):
     with get_cursor(connection) as cursor:
@@ -204,18 +205,3 @@ def add_organism(
                            )
         last_inserted_id = cursor.lastrowid
     return last_inserted_id
-
-
-# def get_training_by_url(url: str):
-#     with connection:
-#         cursor = connection.execute(GET_TRAINING, (url,))
-#         return cursor.fetchone()
-
-
-# def delete_property(id: int):
-#     try:
-#         with connection:
-#             connection.execute(DELETE_T, (id, ))
-#         print(f"OK : Property {id} has been deleted successfully.")
-#     except sqlite3.Error as e:
-#         print(f"KO : Error deleting property {id}: {e}")
