@@ -7,10 +7,10 @@ DATABASE_PROMPT = "Enter the DATABASE_URI value or leave empty to load from .env
 
 db_params = {
     'dbname': 'trainingscraper',
-    'user': 'postgres',
+    'user': os.environ["DATABASE_USER"],
     'password': os.environ["DATABASE_PASSWORD"],
-    'host': 'localhost',
-    'port': '5432'
+    'host': os.environ["DATABASE_HOST"],
+    'port': os.environ["DATABASE_PORT"]
 }
 
 database_uri = input(DATABASE_PROMPT)
