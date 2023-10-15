@@ -57,7 +57,8 @@ CREATE_ORGANISMS_TABLE = """CREATE TABLE IF NOT EXISTS organisms (
 
 # add data
 INSERT_COURSE = """
-                    INSERT INTO courses (places_available, places_total, price, date_add_to_db, town_id, training_id,
+                    INSERT INTO courses (places_available, places_total, price,
+                    date_add_to_db, town_id, training_id,
                     organism_id, department_id, date_id)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;"""
@@ -123,12 +124,12 @@ def create_tables():
 def delete_tables():
     with get_cursor(connection) as cursor:
         print("deleting tables...")
-        connection.execute(DELETE_COURSE_TABLE)
-        connection.execute(DELETE_DATE_TABLE)
-        connection.execute(DELETE_TRAINING_TABLE)
-        connection.execute(DELETE_DEPARTMENT_TABLE)
-        connection.execute(DELETE_TOWN_TABLE)
-        connection.execute(DELETE_ORGANISMS_TABLE)
+        cursor.execute(DELETE_COURSE_TABLE)
+        cursor.execute(DELETE_DATE_TABLE)
+        cursor.execute(DELETE_TRAINING_TABLE)
+        cursor.execute(DELETE_DEPARTMENT_TABLE)
+        cursor.execute(DELETE_TOWN_TABLE)
+        cursor.execute(DELETE_ORGANISMS_TABLE)
         print("Tables deleted.")
 
 
