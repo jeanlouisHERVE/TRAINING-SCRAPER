@@ -61,11 +61,26 @@ INSERT_COURSE = """
                     organism_id, department_id, date_id)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;"""
-INSERT_DATE = ""
-INSERT_TRAINING = ""
-INSERT_DEPARTMENT = ""
-INSERT_TOWN = ""
-INSERT_ORGANISM = ""
+INSERT_DATE = """
+                INSERT INTO courses (training_id, hour_start, hour_end)
+                VALUES (%s, %s, %s)
+                RETURNING id;"""
+INSERT_TRAINING = """
+                    INSERT INTO courses (name, description)
+                    VALUES (%s, %s)
+                    RETURNING id;"""
+INSERT_DEPARTMENT = """
+                        INSERT INTO courses (number, name)
+                        VALUES (%s, %s)
+                        RETURNING id;"""
+INSERT_TOWN = """
+                INSERT INTO courses (postcode, name)
+                VALUES (%s, %s)
+                RETURNING id;"""
+INSERT_ORGANISM = """
+                    INSERT INTO courses (name)
+                    VALUES (%s)
+                    RETURNING id;"""
 
 # get data
 GET_COURSE = "SELECT * FROM properties #####;"
