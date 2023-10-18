@@ -230,28 +230,40 @@ def add_organism(
 def get_courses():
     with get_cursor(connection) as cursor:
         connection.execute(GET_COURSES)
+        courses = cursor.fetchall()
+        return courses
 
 
 def get_dates():
     with get_cursor(connection) as cursor:
-        connection.execute(GET_DATES)
+        cursor.execute(GET_DATES)
+        dates = cursor.fetchall()
+        return dates
 
 
 def get_trainings():
     with get_cursor(connection) as cursor:
-        connection.execute(GET_TRAININGS)
+        cursor.execute(GET_TRAININGS)
+        trainings = cursor.fetchall()
+        return trainings
 
 
 def get_departments():
     with get_cursor(connection) as cursor:
-        connection.execute(GET_DEPARTMENTS)
+        cursor.execute(GET_DEPARTMENTS)
+        departments = cursor.fetchall()
+        return departments
 
 
 def get_towns():
     with get_cursor(connection) as cursor:
-        connection.execute(GET_TOWNS)
+        cursor.execute(GET_TOWNS)
+        towns = cursor.fetchall()
+        return towns
 
 
 def get_organisms():
     with get_cursor(connection) as cursor:
-        connection.execute(GET_ORGANISMS)
+        cursor.execute(GET_ORGANISMS)
+        organisms = cursor.fetchall()
+        return organisms
