@@ -1,4 +1,5 @@
 import os
+import psycopg2
 from psycopg2.pool import SimpleConnectionPool
 from contextlib import contextmanager
 from dotenv import load_dotenv
@@ -19,14 +20,20 @@ if not database_uri:
     database_uri = os.environ["DATABASE_URI"]
 
 # pool = SimpleConnectionPool(minconn=1, maxconn=10, dsn=database_uri)
-pool = SimpleConnectionPool(minconn=1, maxconn=10, **db_params)
+try:
+    pool = SimpleConnectionPool(minconn=1, maxconn=10, **db_params)
+except psycopg2.OperationalError as e:
+    print(f"Error creating the connection pool: {e}")
+    exit(1)
 
 
 # context manager
 @contextmanager
 def get_connection():
-    connection = pool.getconn()
     try:
+        connection = pool.getconn()
         yield connection
+    except Exception as e:
+        print(f"Error getting a database connection: {e}")
     finally:
-        pool.putconn()
+        pool.putconn(connection)
