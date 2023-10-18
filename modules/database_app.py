@@ -84,12 +84,12 @@ INSERT_ORGANISM = """
                     RETURNING id;"""
 
 # get data
-GET_COURSE = "SELECT * FROM courses;"
-GET_DATE = "SELECT * FROM dates;"
+GET_COURSES = "SELECT * FROM courses;"
+GET_DATES = "SELECT * FROM dates;"
 GET_TRAININGS = "SELECT * FROM trainings;"
-GET_DEPARTMENT = "SELECT * FROM departments;"
-GET_TOWN = "SELECT * FROM towns;"
-GET_ORGANISM = "SELECT * FROM organisms;"
+GET_DEPARTMENTS = "SELECT * FROM departments;"
+GET_TOWNS = "SELECT * FROM towns;"
+GET_ORGANISMS = "SELECT * FROM organisms;"
 
 # update data
 UPDATE_COURSE = """UPDATE trainings
@@ -225,3 +225,33 @@ def add_organism(
                            )
         last_inserted_id = cursor.lastrowid
     return last_inserted_id
+
+
+def get_courses():
+    with get_cursor(connection) as cursor:
+        connection.execute(GET_COURSES)
+
+
+def get_dates():
+    with get_cursor(connection) as cursor:
+        connection.execute(GET_DATES)
+
+
+def get_trainings():
+    with get_cursor(connection) as cursor:
+        connection.execute(GET_TRAININGS)
+
+
+def get_departments():
+    with get_cursor(connection) as cursor:
+        connection.execute(GET_DEPARTMENTS)
+
+
+def get_towns():
+    with get_cursor(connection) as cursor:
+        connection.execute(GET_TOWNS)
+
+
+def get_organisms():
+    with get_cursor(connection) as cursor:
+        connection.execute(GET_ORGANISMS)
