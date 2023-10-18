@@ -4,7 +4,19 @@ import psycopg2
 from dotenv import load_dotenv
 from modules.database_app import (
     create_tables,
-    delete_tables
+    delete_tables,
+    add_course,
+    add_date,
+    add_training,
+    add_department,
+    add_town,
+    add_organism,
+    get_courses,
+    get_dates,
+    get_trainings,
+    get_departments,
+    get_towns,
+    get_organisms
 )
 # TODO add functions to test
 # TODO adapt to postgresql
@@ -35,25 +47,131 @@ class TestDatabaseFunctions(unittest.TestCase):
             print("Closing database")
             self.database_connection.close()
             print("------TEST END : ENSURE DATABASE IS CLEANED--------")
-            # properties = get_properties()
-            # agencies = get_agencies()
-            # descriptions = get_properties_descriptions()
-            # prices = get_prices()
-            # old_properties = get_old_properties()
-            # old_properties_descriptions = get_old_properties_descriptions()
-            # old_prices = get_old_prices()
-            # print("get_properties", properties)
-            # print("get_agencies", agencies)
-            # print("get_descriptions", descriptions)
-            # print("get_prices", prices)
-            # print("get_old_properties", old_properties)
-            # print("get_old_properties_descriptions", old_properties_descriptions)
-            # print("get_old_prices", old_prices)
+            courses = get_courses()
+            dates = get_dates()
+            trainings = get_trainings()
+            departments = get_departments()
+            towns = get_towns()
+            organisms = get_organisms()
+            print("get_courses", courses)
+            print("get_dates", dates)
+            print("get_trainings", trainings)
+            print("get_departments", departments)
+            print("get_towns", towns)
+            print("get_organisms", organisms)
             print("-------------------------------------------------------")
             print("-------------------------------------------------------")
 
 
-# TODO add functions to test
+def test_add_course(self):
+    places_available = 10
+    places_total = 20
+    price = 100
+    date_add_to_db = 1634520000
+    town_id = 1
+    type_id = 2
+    organism_id = 3
+    department_id = 4
+    date_id = 5
+
+    last_inserted_id = add_course(
+        places_available,
+        places_total,
+        price,
+        date_add_to_db,
+        town_id,
+        type_id,
+        organism_id,
+        department_id,
+        date_id,
+    )
+
+    self.assertIsNotNone(last_inserted_id)
+    self.cur.execute("SELECT * FROM courses WHERE id = %s", (last_inserted_id,))
+    result = self.cur.fetchone()
+    self.assertIsNotNone(result)
+    self.assertEqual(result[1], places_available)
+    self.assertEqual(result[2], places_total)
+    self.assertEqual(result[3], price)
+    self.assertEqual(result[4], date_add_to_db)
+    self.assertEqual(result[5], town_id)
+    self.assertEqual(result[6], type_id)
+    self.assertEqual(result[7], organism_id)
+    self.assertEqual(result[8], department_id)
+    self.assertEqual(result[9], date_id)
+
+
+def test_add_date(self):
+    hour_start = "08:00 AM"
+    hour_end = "04:00 PM"
+    date = 1634606400
+
+    last_inserted_id = add_date(hour_start, hour_end, date)
+
+    self.assertIsNotNone(last_inserted_id)
+
+    self.cur.execute("SELECT * FROM dates WHERE id = %s", (last_inserted_id,))
+    result = self.cur.fetchone()
+    self.assertIsNotNone(result)
+    self.assertEqual(result[1], hour_start)
+    self.assertEqual(result[2], hour_end)
+    self.assertEqual(result[3], date)
+
+
+def test_add_training(self):
+    name = "Test Training"
+    description = "A training description"
+
+    last_inserted_id = add_training(name, description)
+
+    self.assertIsNotNone(last_inserted_id)
+
+    self.cur.execute("SELECT * FROM training WHERE id = %s", (last_inserted_id,))
+    result = self.cur.fetchone()
+    self.assertIsNotNone(result)
+    self.assertEqual(result[1], name)
+    self.assertEqual(result[2], description)
+
+
+def test_add_department(self):
+    number = "123"
+    name = "Test Department"
+
+    last_inserted_id = add_department(number, name)
+
+    self.assertIsNotNone(last_inserted_id)
+
+    self.cur.execute("SELECT * FROM department WHERE id = %s", (last_inserted_id,))
+    result = self.cur.fetchone()
+    self.assertIsNotNone(result)
+    self.assertEqual(result[1], number)
+    self.assertEqual(result[2], name)
+
+
+def test_add_town(self):
+    name = "Test Town"
+
+    last_inserted_id = add_town(name)
+
+    self.assertIsNotNone(last_inserted_id)
+
+    self.cur.execute("SELECT * FROM town WHERE id = %s", (last_inserted_id,))
+    result = self.cur.fetchone()
+    self.assertIsNotNone(result)
+    self.assertEqual(result[1], name)
+
+
+def test_add_organism(self):
+    name = "Test Organism"
+
+    last_inserted_id = add_organism(name)
+
+    self.assertIsNotNone(last_inserted_id)
+
+    self.cur.execute("SELECT * FROM organism WHERE id = %s", (last_inserted_id,))
+    result = self.cur.fetchone()
+    self.assertIsNotNone(result)
+    self.assertEqual(result[1], name)
 
 
 if __name__ == '__main__':
