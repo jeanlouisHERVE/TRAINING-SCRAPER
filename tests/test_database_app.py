@@ -1,5 +1,7 @@
 import unittest
 import psycopg2
+import subprocess
+import time
 
 from dotenv import load_dotenv
 from modules.database_app import (
@@ -28,11 +30,17 @@ load_dotenv()
 class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
         # Create an in-memory SQLite database for testing
-        self.database_connection = psycopg2.connect(":memory:")
+        self.db = subprocess.Popen(["pg_tmp", "testdb"])
+        time.sleep(2)
 
-        self.cursor = self.database_connection.cursor()
-
-        # Create the database tables before running tests
+        self.conn = psycopg2.connect(
+            dbname="testdb",
+            user="test_user",
+            password="test_password",
+            host="localhost",
+            port=self.db._kwargs['port']  # Get the port from pg_tmp
+        )
+        self.cur = self.conn.cursor()
         create_tables()
 
     def tearDown(self):
@@ -45,7 +53,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         finally:
             # Close the database connection
             print("Closing database")
-            self.database_connection.close()
+            self.cur.close()
+            self.conn.close()
+            self.db.terminate()
+            self.db.wait()
             print("------TEST END : ENSURE DATABASE IS CLEANED--------")
             courses = get_courses()
             dates = get_dates()
