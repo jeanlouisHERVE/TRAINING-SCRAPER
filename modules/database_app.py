@@ -63,29 +63,33 @@ INSERT_COURSE = """
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;"""
 INSERT_DATE = """
-                INSERT INTO courses (training_id, hour_start, hour_end)
+                INSERT INTO dates (training_id, hour_start, hour_end)
                 VALUES (%s, %s, %s)
                 RETURNING id;"""
 INSERT_TRAINING = """
-                    INSERT INTO courses (name, description)
+                    INSERT INTO trainings (name, description)
                     VALUES (%s, %s)
                     RETURNING id;"""
 INSERT_DEPARTMENT = """
-                        INSERT INTO courses (number, name)
+                        INSERT INTO departments (number, name)
                         VALUES (%s, %s)
                         RETURNING id;"""
 INSERT_TOWN = """
-                INSERT INTO courses (postcode, name)
+                INSERT INTO towns (postcode, name)
                 VALUES (%s, %s)
                 RETURNING id;"""
 INSERT_ORGANISM = """
-                    INSERT INTO courses (name)
+                    INSERT INTO organisms (name)
                     VALUES (%s)
                     RETURNING id;"""
 
 # get data
-GET_COURSE = "SELECT * FROM properties #####;"
-GET_TYPE = "SELECT * FROM types #####;"
+GET_COURSE = "SELECT * FROM courses;"
+GET_DATE = "SELECT * FROM dates;"
+GET_TRAININGS = "SELECT * FROM trainings;"
+GET_DEPARTMENT = "SELECT * FROM departments;"
+GET_TOWN = "SELECT * FROM towns;"
+GET_ORGANISM = "SELECT * FROM organisms;"
 
 # update data
 UPDATE_COURSE = """UPDATE trainings

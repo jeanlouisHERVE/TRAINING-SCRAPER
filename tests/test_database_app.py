@@ -62,25 +62,12 @@ if __name__ == '__main__':
 
     # Define the order of tests
     ordered_tests = [
-        # "test_add_property",
-        # "test_add_old_property",
-        # "test_add_description",
-        # "test_add_agency",
-        # "test_add_price_to_property",
-        # "test_get_property_by_url",
-        # "test_get_property_by_id",
-        # "test_get_id_url_from_properties",
-        # "test_get_id_url_dateofmodification_from_properties",
-        # "test_get_properties",
-        # "test_get_properties_number",
-        # "test_get_properties_from_adding_date",
-        # "test_get_property_description_by_id",
-        # "test_get_agency",
-        # "test_get_agencies",
-        # "test_get_agency_id_from_name",
-        # "test_update_description",
-        # "test_update_agency",
-        # "test_delete_property",
+        "test_add_course",
+        "test_add_date",
+        "test_add_training",
+        "test_add_department",
+        "test_add_town",
+        "test_add_organism",
     ]
 
     test_instance = TestDatabaseFunctions()
