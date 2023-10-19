@@ -4,8 +4,6 @@ from psycopg2.pool import SimpleConnectionPool
 from contextlib import contextmanager
 from dotenv import load_dotenv
 
-DATABASE_PROMPT = "Enter the DATABASE_URI value or leave empty to load from .env file: "
-
 db_params = {
     'dbname': 'trainingscraper',
     'user': os.environ["DATABASE_USER"],
@@ -14,10 +12,8 @@ db_params = {
     'port': os.environ["DATABASE_PORT"]
 }
 
-database_uri = input(DATABASE_PROMPT)
-if not database_uri:
-    load_dotenv()
-    database_uri = os.environ["DATABASE_URI"]
+load_dotenv()
+database_uri = os.environ["DATABASE_URI"]
 
 # pool = SimpleConnectionPool(minconn=1, maxconn=10, dsn=database_uri)
 try:
