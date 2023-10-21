@@ -2,10 +2,8 @@
 import psycopg2
 
 # other modules
-# from psycopg2 import sql
 from dotenv import load_dotenv
-from contextlib import contextmanager
-# from psycopg2.extras import execute_values
+from config import config
 
 # get data from .env file
 load_dotenv()
@@ -14,7 +12,8 @@ load_dotenv()
 WINDOWS_DATABASE_PATH = "c:\\Users\\jeanl\\OneDrive\\Bureau\\TRAINING-SCRAPER\\database\\trainingscraper.db"
 LINUX_DATABASE_PATH = "/home/jean-louis/Bureau/TRAINING-SCRAPER/database/trainingscraper.db"
 
-connection = psycopg2.connect(WINDOWS_DATABASE_PATH)
+config_params = config()
+connection = psycopg2.connect(**config_params)
 
 # create database
 CREATE_COURSE_TABLE = """CREATE TABLE IF NOT EXISTS courses (
@@ -106,15 +105,8 @@ DELETE_TOWN_TABLE = "DELETE FROM towns;"
 DELETE_ORGANISMS_TABLE = "DELETE FROM organism;"
 
 
-@contextmanager
-def get_cursor(connection):
-    with connection:
-        with connection.cursor() as cursor:
-            yield cursor
-
-
 def create_tables():
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         print("Creating tables...")
         cursor.execute(CREATE_COURSE_TABLE)
         cursor.execute(CREATE_DATE_TABLE)
@@ -126,7 +118,7 @@ def create_tables():
 
 
 def delete_tables():
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         print("deleting tables...")
         cursor.execute(DELETE_COURSE_TABLE)
         cursor.execute(DELETE_DATE_TABLE)
@@ -147,7 +139,7 @@ def add_course(
         organism_id: int,
         department_id: int,
         date_id: int):
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         connection.execute(INSERT_COURSE, (
                                             places_available,
                                             places_total,
@@ -168,7 +160,7 @@ def add_date(
                     hour_start: str,
                     hour_end: str,
                     date: float):
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         connection.execute(INSERT_DATE, (
                                             hour_start,
                                             hour_end,
@@ -182,7 +174,7 @@ def add_date(
 def add_training(
                     name: str,
                     description: str):
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         connection.execute(INSERT_TRAINING, (
                                             name,
                                             description,
@@ -195,7 +187,7 @@ def add_training(
 def add_department(
                     number: str,
                     name: str):
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         connection.execute(INSERT_DEPARTMENT, (
                                             name,
                                             number,
@@ -207,7 +199,7 @@ def add_department(
 
 def add_town(
                 name: str):
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         connection.execute(INSERT_DEPARTMENT, (
                                             name,
                                             )
@@ -218,7 +210,7 @@ def add_town(
 
 def add_organism(
                     name: str):
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         connection.execute(INSERT_DEPARTMENT, (
                                             name,
                                             )
@@ -228,42 +220,42 @@ def add_organism(
 
 
 def get_courses():
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         connection.execute(GET_COURSES)
         courses = cursor.fetchall()
         return courses
 
 
 def get_dates():
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         cursor.execute(GET_DATES)
         dates = cursor.fetchall()
         return dates
 
 
 def get_trainings():
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         cursor.execute(GET_TRAININGS)
         trainings = cursor.fetchall()
         return trainings
 
 
 def get_departments():
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         cursor.execute(GET_DEPARTMENTS)
         departments = cursor.fetchall()
         return departments
 
 
 def get_towns():
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         cursor.execute(GET_TOWNS)
         towns = cursor.fetchall()
         return towns
 
 
 def get_organisms():
-    with get_cursor(connection) as cursor:
+    with connection.cursor() as cursor:
         cursor.execute(GET_ORGANISMS)
         organisms = cursor.fetchall()
         return organisms
