@@ -21,7 +21,7 @@ from driver_manager import WebDriverManager
 
 # own packages
 # import database_app
-import functions
+# import functions
 import data
 
 # get data from .env file
@@ -30,9 +30,8 @@ load_dotenv()
 # variables
 driver = WebDriverManager.get_driver()
 actions = ActionChains(driver)
-# TODO add crf url
 current_time_utc = datetime.datetime.now(tz=pytz.utc).timestamp()
-functions = functions
+organism = "la croix rouge"
 
 
 # functions
@@ -67,23 +66,26 @@ def add_trainings():
             day_headers = training_container.find_elements(By.TAG_NAME, 'h2')
             print("day_headers :", day_headers)
             for day_header in day_headers:
+                print('------------------START TRAINING------------------')
                 date = day_header.text
                 print("date :", date)
-                ul_element = day_header.find_elements(By.XPATH, './following-sibling::ul')
+                ul_element = day_header.find_element(By.XPATH, './following-sibling::ul')
                 print("ul_element :", ul_element)
                 training_items = ul_element.find_elements(By.CSS_SELECTOR, 'li')
                 print("training_items :", training_items)
                 for training_item in training_items:
-                    training_name = training_item.find_element(By.CSS_SELECTOR, 'strong').text
-                    location = training_item.find_element(By.CSS_SELECTOR, 'strong')[1].text
+                    strong_elements = training_item.find_elements(By.CSS_SELECTOR, 'strong')
+                    training_name = strong_elements[0].text
+                    location = strong_elements[1].text
                     time = training_item.find_element(By.CSS_SELECTOR, 'span').text
 
+                    print(f"Date: {organism}")
                     print(f"Date: {date}")
                     print(f"Training: {training_name}")
                     print(f"Location: {location}")
                     print(f"Time: {time}")
                     print("\n")
-                    input()
+                print('------------------END TRAINING------------------')
         except NoSuchElementException:
             print("KO : no list of trainings on this page")
 
