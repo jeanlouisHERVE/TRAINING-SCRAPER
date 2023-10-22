@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 from driver_manager import WebDriverManager
 
 # own packages
-# import database_app
+import database_app
 # import functions
 
 # get data from .env file

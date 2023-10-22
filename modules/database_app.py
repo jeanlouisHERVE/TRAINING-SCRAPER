@@ -57,7 +57,7 @@ CREATE_TRAININGS_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
 
 CREATE_DEPARTMENTS_TABLE = """CREATE TABLE IF NOT EXISTS departments (
                                 id SERIAL NOT NULL PRIMARY KEY,
-                                number INTEGER,
+                                number TEXT,
                                 name TEXT UNIQUE);"""
 
 CREATE_TOWNS_TABLE = """CREATE TABLE IF NOT EXISTS towns (
@@ -111,6 +111,7 @@ GET_COURSES = "SELECT * FROM courses;"
 GET_DATES = "SELECT * FROM dates;"
 GET_TRAININGS = "SELECT * FROM trainings;"
 GET_DEPARTMENTS = "SELECT * FROM departments;"
+GET_DEPARTMENT_FROM_NUMBER = "SELECT * FROM departments WHERE number = ?;"
 GET_TOWNS = "SELECT * FROM towns;"
 GET_TYPES = "SELECT * FROM types;"
 GET_ORGANISMS = "SELECT * FROM organisms;"
@@ -228,7 +229,7 @@ def add_department(
 def add_town(
                 name: str):
     with connection.cursor() as cursor:
-        connection.execute(INSERT_DEPARTMENT, (
+        connection.execute(INSERT_TOWN, (
                                             name,
                                             )
                            )
@@ -240,7 +241,7 @@ def add_type(
                 name: str,
                 description: str):
     with connection.cursor() as cursor:
-        connection.execute(INSERT_DEPARTMENT, (
+        connection.execute(INSERT_TYPE, (
                                             name,
                                             description,
                                             )
@@ -252,7 +253,7 @@ def add_type(
 def add_organism(
                     name: str):
     with connection.cursor() as cursor:
-        connection.execute(INSERT_DEPARTMENT, (
+        connection.execute(INSERT_ORGANISM, (
                                             name,
                                             )
                            )
@@ -286,6 +287,13 @@ def get_departments():
         cursor.execute(GET_DEPARTMENTS)
         departments = cursor.fetchall()
         return departments
+
+
+def get_departments_from_number(number: str):
+    with connection.cursor() as cursor:
+        cursor.execute(GET_DEPARTMENT_FROM_NUMBER, (number,))
+        department = cursor.fetchone()
+        return department
 
 
 def get_towns():
