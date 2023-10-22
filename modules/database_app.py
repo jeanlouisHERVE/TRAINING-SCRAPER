@@ -27,8 +27,8 @@ connection = connect_database(config_params)
 
 
 # create database
-CREATE_COURSE_TABLE = """CREATE TABLE IF NOT EXISTS courses (
-                                id INTEGER NOT NULL PRIMARY KEY,
+CREATE_COURSES_TABLE = """CREATE TABLE IF NOT EXISTS courses (
+                                id SERIAL NOT NULL PRIMARY KEY,
                                 places_available INTEGER,
                                 places_total INTEGER,
                                 price INTEGER,
@@ -39,29 +39,29 @@ CREATE_COURSE_TABLE = """CREATE TABLE IF NOT EXISTS courses (
                                 FOREIGN KEY (department_id) REFERENCES departments(id),
                                 FOREIGN KEY (date_id) REFERENCES dates(id) ON DELETE CASCADE);"""
 
-CREATE_DATE_TABLE = """CREATE TABLE IF NOT EXISTS dates (
-                                    training_id INTEGER,
-                                    hour_start TEXT,
-                                    hour_end TEXT,
-                                    date TIMESTAMP);"""
+CREATE_DATES_TABLE = """CREATE TABLE IF NOT EXISTS dates (
+                            id SERIAL NOT NULL PRIMARY KEY,
+                            hour_start TEXT,
+                            hour_end TEXT,
+                            date TIMESTAMP);"""
 
-CREATE_TRAINING_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
-                                    id INTEGER NOT NULL PRIMARY KEY,
-                                    name TEXT UNIQUE,
-                                    description LONGTEXT);"""
+CREATE_TRAININGS_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
+                                id SERIAL NOT NULL PRIMARY KEY,
+                                name TEXT UNIQUE,
+                                description LONGTEXT);"""
 
-CREATE_DEPARTMENT_TABLE = """CREATE TABLE IF NOT EXISTS departments (
-                            id INTEGER NOT NULL PRIMARY KEY,
+CREATE_DEPARTMENTS_TABLE = """CREATE TABLE IF NOT EXISTS departments (
+                            id SERIAL NOT NULL PRIMARY KEY,
                             number INTEGER PRIMARY KEY,
                             name TEXT UNIQUE);"""
 
-CREATE_TOWN_TABLE = """CREATE TABLE IF NOT EXISTS towns (
-                            id INTEGER NOT NULL PRIMARY KEY,
+CREATE_TOWNS_TABLE = """CREATE TABLE IF NOT EXISTS towns (
+                            id SERIAL NOT NULL PRIMARY KEY,
                             postcode TEXT,
                             name TEXT UNIQUE);"""
 
 CREATE_ORGANISMS_TABLE = """CREATE TABLE IF NOT EXISTS organisms (
-                            id INTEGER NOT NULL PRIMARY KEY,
+                            id SERIAL NOT NULL PRIMARY KEY,
                             name TEXT UNIQUE);"""
 
 # add data
@@ -72,7 +72,7 @@ INSERT_COURSE = """
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;"""
 INSERT_DATE = """
-                INSERT INTO dates (training_id, hour_start, hour_end)
+                INSERT INTO dates (id, hour_start, hour_end)
                 VALUES (%s, %s, %s)
                 RETURNING id;"""
 INSERT_TRAINING = """
@@ -118,11 +118,11 @@ DELETE_ORGANISMS_TABLE = "DELETE FROM organism;"
 def create_tables(connection):
     with connection.cursor() as cursor:
         print("Creating tables...")
-        cursor.execute(CREATE_COURSE_TABLE)
-        cursor.execute(CREATE_DATE_TABLE)
-        cursor.execute(CREATE_TRAINING_TABLE)
-        cursor.execute(CREATE_DEPARTMENT_TABLE)
-        cursor.execute(CREATE_TOWN_TABLE)
+        cursor.execute(CREATE_COURSES_TABLE)
+        cursor.execute(CREATE_DATES_TABLE)
+        cursor.execute(CREATE_TRAININGS_TABLE)
+        cursor.execute(CREATE_DEPARTMENTS_TABLE)
+        cursor.execute(CREATE_TOWNS_TABLE)
         cursor.execute(CREATE_ORGANISMS_TABLE)
         print("Tables created.")
 
