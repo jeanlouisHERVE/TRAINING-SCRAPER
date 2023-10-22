@@ -71,12 +71,10 @@ def add_trainings():
 
                 training_items = ul_element.find_elements(By.TAG_NAME, 'li')
                 for training_item in training_items:
-                    # Extract relevant information from each training item
                     training_name = training_item.find_element(By.CSS_SELECTOR, 'strong').text
                     location = training_item.find_element(By.CSS_SELECTOR, 'strong')[1].text
                     time = training_item.find_element(By.CSS_SELECTOR, 'span').text
 
-                    # Print the information or store it as needed
                     print(f"Date: {date}")
                     print(f"Training: {training_name}")
                     print(f"Location: {location}")
