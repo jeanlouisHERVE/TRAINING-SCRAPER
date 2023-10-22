@@ -37,8 +37,7 @@ CREATE_COURSE_TABLE = """CREATE TABLE IF NOT EXISTS courses (
                                 FOREIGN KEY (type_id) REFERENCES types(id),
                                 FOREIGN KEY (organism_id) REFERENCES organisms(id),
                                 FOREIGN KEY (department_id) REFERENCES departments(id),
-                                FOREIGN KEY (date_id) REFERENCES dates(id) ON DELETE CASCADE,
-                        );"""
+                                FOREIGN KEY (date_id) REFERENCES dates(id) ON DELETE CASCADE);"""
 
 CREATE_DATE_TABLE = """CREATE TABLE IF NOT EXISTS dates (
                                     training_id INTEGER,

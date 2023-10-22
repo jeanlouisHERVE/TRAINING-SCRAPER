@@ -3,3 +3,6 @@ Mise en place de l'architecture
 
 
 # TODO migrer la BDD de sqlite3 à postgresql
+
+22/10/2023
+    ne pas oublier de définir le mot de passe de l'user postgres dans PGadmin4
