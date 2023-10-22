@@ -72,6 +72,7 @@ def add_trainings():
                 ul_element = day_header.find_elements(By.XPATH, './following-sibling::ul')
                 print("ul_element :", ul_element)
                 training_items = ul_element.find_elements(By.CSS_SELECTOR, 'li')
+                print("training_items :", training_items)
                 for training_item in training_items:
                     training_name = training_item.find_element(By.CSS_SELECTOR, 'strong').text
                     location = training_item.find_element(By.CSS_SELECTOR, 'strong')[1].text
