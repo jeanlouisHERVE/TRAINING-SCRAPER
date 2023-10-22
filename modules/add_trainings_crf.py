@@ -87,6 +87,9 @@ def add_trainings():
                 print(f"Training: {training_name}")
                 print(f"Location: {location}")
                 print(f"department_number: {department}")
+                if not database_app.get_departments_from_number(department):
+                    database_app.add_department(department)
+                
                 print(f"town: {town}")
                 print(f"Time: {time}")
                 print("\n")
