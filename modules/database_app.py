@@ -33,6 +33,11 @@ CREATE_COURSES_TABLE = """CREATE TABLE IF NOT EXISTS courses (
                                 places_total INTEGER,
                                 price INTEGER,
                                 date_add_to_db TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                town_id INTEGER,
+                                type_id INTEGER,
+                                organism_id INTEGER,
+                                department_id INTEGER,
+                                date_id INTEGER,
                                 FOREIGN KEY (town_id) REFERENCES towns(id),
                                 FOREIGN KEY (type_id) REFERENCES types(id),
                                 FOREIGN KEY (organism_id) REFERENCES organisms(id),
@@ -51,9 +56,9 @@ CREATE_TRAININGS_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
                                 description TEXT);"""
 
 CREATE_DEPARTMENTS_TABLE = """CREATE TABLE IF NOT EXISTS departments (
-                            id SERIAL NOT NULL PRIMARY KEY,
-                            number INTEGER PRIMARY KEY,
-                            name TEXT UNIQUE);"""
+                                id SERIAL NOT NULL,
+                                number INTEGER PRIMARY KEY,
+                                name TEXT UNIQUE);"""
 
 CREATE_TOWNS_TABLE = """CREATE TABLE IF NOT EXISTS towns (
                             id SERIAL NOT NULL PRIMARY KEY,
