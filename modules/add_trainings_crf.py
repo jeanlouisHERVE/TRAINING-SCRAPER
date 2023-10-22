@@ -69,20 +69,37 @@ def add_trainings():
             pairs = []
             for i in range(0, len(trainings), 2):
                 pairs.append((trainings[i], trainings[i + 1]))
+            print("pairs", pairs)
 
             # Now, the 'pairs' list contains pairs of (h2, ul) elements within the div with class "list"
             for pair in pairs:
+                print("----------------START TRAINING----------------")
                 h2 = pair[0].text
                 ul = pair[1]
 
                 # Find li elements within the ul
-                li_elements = pair[1].find_elements(By.XPATH, ".//li")
+                li_elements = ul.find_elements(By.XPATH, ".//li")
                 lis = [li.text for li in li_elements]
 
                 print(f"H2: {h2}")
-                print(f"UL: {ul}")
-                print("LI elements:", lis)
-                input()
+                # print(f"UL: {ul}")
+                try:
+                    geographical_elements = lis[0]
+                    print(f"OK1 : {geographical_elements}")
+                except (IndexError, NoSuchElementException):
+                    print("KO : no geographical_elements")
+                try:
+                    hours = lis[1]
+                    print(f"OK2 : {hours}")
+                except (IndexError, NoSuchElementException):
+                    print("KO : no hours elements")
+                try:
+                    available_places = lis[2]
+                    print(f"OK3 : {available_places}")
+                except (IndexError, NoSuchElementException):
+                    print("KO : no available_place part")
+                print("----------------END TRAINING----------------")
+            input()
         except NoSuchElementException:
             print("KO : no list of trainings on this page")
 
