@@ -4,6 +4,7 @@ import re
 import math
 import pytz
 import datetime
+import data
 
 
 def date_converter_french_date_to_utc_timestamp(french_date: str):
@@ -42,6 +43,14 @@ def date_converter_french_date_to_utc_timestamp(french_date: str):
     else:
         print(f"KO : The provided French month '{french_month}' does not exist")
         return None
+
+
+def get_department_name(department_number):
+    try:
+        data.department_names[department_number]
+        return True
+    except ValueError:
+        print(f"KO : No department got the number {department_number}s")
 
 
 def contains_numbers(input_string: str):
