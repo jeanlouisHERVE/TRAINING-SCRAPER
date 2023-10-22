@@ -56,14 +56,19 @@ CREATE_TRAININGS_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
                                 description TEXT);"""
 
 CREATE_DEPARTMENTS_TABLE = """CREATE TABLE IF NOT EXISTS departments (
-                                id SERIAL NOT NULL,
-                                number INTEGER PRIMARY KEY,
+                                id SERIAL NOT NULL PRIMARY KEY,
+                                number INTEGER,
                                 name TEXT UNIQUE);"""
 
 CREATE_TOWNS_TABLE = """CREATE TABLE IF NOT EXISTS towns (
                             id SERIAL NOT NULL PRIMARY KEY,
                             postcode TEXT,
                             name TEXT UNIQUE);"""
+
+CREATE_TYPES_TABLE = """CREATE TABLE IF NOT EXISTS types (
+                            id SERIAL NOT NULL PRIMARY KEY,
+                            name TEXT UNIQUE,
+                            description TEXT);"""
 
 CREATE_ORGANISMS_TABLE = """CREATE TABLE IF NOT EXISTS organisms (
                             id SERIAL NOT NULL PRIMARY KEY,
@@ -92,6 +97,10 @@ INSERT_TOWN = """
                 INSERT INTO towns (postcode, name)
                 VALUES (%s, %s)
                 RETURNING id;"""
+INSERT_TYPE = """
+                INSERT INTO towns (name, description)
+                VALUES (%s, %s)
+                RETURNING id;"""
 INSERT_ORGANISM = """
                     INSERT INTO organisms (name)
                     VALUES (%s)
@@ -103,6 +112,7 @@ GET_DATES = "SELECT * FROM dates;"
 GET_TRAININGS = "SELECT * FROM trainings;"
 GET_DEPARTMENTS = "SELECT * FROM departments;"
 GET_TOWNS = "SELECT * FROM towns;"
+GET_TYPES = "SELECT * FROM types;"
 GET_ORGANISMS = "SELECT * FROM organisms;"
 
 # update data
@@ -117,6 +127,7 @@ DELETE_DATES_TABLE = "DELETE FROM dates;"
 DELETE_TRAININGS_TABLE = "DELETE FROM trainings;"
 DELETE_DEPARTMENTS_TABLE = "DELETE FROM departments;"
 DELETE_TOWNS_TABLE = "DELETE FROM towns;"
+DELETE_TYPES_TABLE = "DELETE FROM types;"
 DELETE_ORGANISMS_TABLE = "DELETE FROM organisms;"
 
 
@@ -127,6 +138,7 @@ def create_tables(connection):
         cursor.execute(CREATE_TRAININGS_TABLE)
         cursor.execute(CREATE_DEPARTMENTS_TABLE)
         cursor.execute(CREATE_TOWNS_TABLE)
+        cursor.execute(CREATE_TYPES_TABLE)
         cursor.execute(CREATE_ORGANISMS_TABLE)
         cursor.execute(CREATE_COURSES_TABLE)
         print("Tables created.")
@@ -140,6 +152,7 @@ def delete_tables(connection):
         cursor.execute(DELETE_TRAININGS_TABLE)
         cursor.execute(DELETE_DEPARTMENTS_TABLE)
         cursor.execute(DELETE_TOWNS_TABLE)
+        cursor.execute(DELETE_TYPES_TABLE)
         cursor.execute(DELETE_ORGANISMS_TABLE)
         print("Tables deleted.")
 
@@ -217,6 +230,19 @@ def add_town(
     with connection.cursor() as cursor:
         connection.execute(INSERT_DEPARTMENT, (
                                             name,
+                                            )
+                           )
+        last_inserted_id = cursor.lastrowid
+    return last_inserted_id
+
+
+def add_type(
+                name: str,
+                description: str):
+    with connection.cursor() as cursor:
+        connection.execute(INSERT_DEPARTMENT, (
+                                            name,
+                                            description,
                                             )
                            )
         last_inserted_id = cursor.lastrowid
