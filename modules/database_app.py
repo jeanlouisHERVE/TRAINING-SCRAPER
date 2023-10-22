@@ -11,7 +11,6 @@ load_dotenv()
 # variables
 WINDOWS_DATABASE_PATH = "c:\\Users\\jeanl\\OneDrive\\Bureau\\TRAINING-SCRAPER\\database\\trainingscraper.db"
 LINUX_DATABASE_PATH = "/home/jean-louis/Bureau/TRAINING-SCRAPER/database/trainingscraper.db"
-
 config_params = config()
 
 
@@ -22,6 +21,9 @@ def connect_database(config_params):
     except psycopg2.OperationalError as e:
         print(f"psycopg2.OperationalError: {e}")
         return None
+
+
+connection = connect_database(config_params)
 
 
 # create database
