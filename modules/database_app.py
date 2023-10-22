@@ -48,7 +48,7 @@ CREATE_DATES_TABLE = """CREATE TABLE IF NOT EXISTS dates (
 CREATE_TRAININGS_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
                                 id SERIAL NOT NULL PRIMARY KEY,
                                 name TEXT UNIQUE,
-                                description LONGTEXT);"""
+                                description TEXT);"""
 
 CREATE_DEPARTMENTS_TABLE = """CREATE TABLE IF NOT EXISTS departments (
                             id SERIAL NOT NULL PRIMARY KEY,
@@ -118,12 +118,12 @@ DELETE_ORGANISMS_TABLE = "DELETE FROM organisms;"
 def create_tables(connection):
     with connection.cursor() as cursor:
         print("Creating tables...")
-        cursor.execute(CREATE_COURSES_TABLE)
         cursor.execute(CREATE_DATES_TABLE)
         cursor.execute(CREATE_TRAININGS_TABLE)
         cursor.execute(CREATE_DEPARTMENTS_TABLE)
         cursor.execute(CREATE_TOWNS_TABLE)
         cursor.execute(CREATE_ORGANISMS_TABLE)
+        cursor.execute(CREATE_COURSES_TABLE)
         print("Tables created.")
 
 
