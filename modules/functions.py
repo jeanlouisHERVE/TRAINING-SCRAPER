@@ -47,8 +47,7 @@ def date_converter_french_date_to_utc_timestamp(french_date: str):
 
 def get_department_name(department_number):
     try:
-        data.department_names[department_number]
-        return True
+        return data.department_names[department_number]
     except ValueError:
         print(f"KO : No department got the number {department_number}s")
 

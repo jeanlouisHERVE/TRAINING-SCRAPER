@@ -21,7 +21,7 @@ from driver_manager import WebDriverManager
 
 # own packages
 import database_app
-# import functions
+import functions
 
 # get data from .env file
 load_dotenv()
@@ -78,7 +78,7 @@ def add_trainings():
                 strong_elements = training_item.find_elements(By.CSS_SELECTOR, 'strong')
                 training_name = strong_elements[0].text
                 location = strong_elements[1].text
-                department = int(re.findall(pattern_extract_department_numbers, location)[0])
+                department_number = int(re.findall(pattern_extract_department_numbers, location)[0])
                 town = re.sub(pattern_retrieve_numbers, '', location)
                 time = training_item.find_element(By.CSS_SELECTOR, 'span').text
 
@@ -86,10 +86,12 @@ def add_trainings():
                 print(f"Date: {date}")
                 print(f"Training: {training_name}")
                 print(f"Location: {location}")
-                print(f"department_number: {department}")
-                if not database_app.get_departments_from_number(department):
-                    database_app.add_department(department)
-                
+                print(f"department_number: {department_number}")
+                if department_number:
+                    department_name = functions.get_department_name(department_number)
+                print(f"department_number: {department_name}")
+                if not database_app.get_departments_from_number(department_number):
+                    database_app.add_department(department_number)
                 print(f"town: {town}")
                 print(f"Time: {time}")
                 print("\n")
