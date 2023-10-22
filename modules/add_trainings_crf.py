@@ -62,44 +62,27 @@ def add_trainings():
         print("department_number :", department_number)
         # check an agree the terms section exists
         try:
-            trainingsList = driver.find_element(By.CSS_SELECTOR, "div.liste-formations")
-            print("trainingsList", trainingsList)
-            trainings = trainingsList.find_elements(By.XPATH, ".//h2/following-sibling::ul")
-            print("trainings", trainings)
-            pairs = []
-            for i in range(0, len(trainings), 2):
-                pairs.append((trainings[i], trainings[i + 1]))
-            print("pairs", pairs)
+            training_container = driver.find_element(By.CSS_SELECTOR, 'div.liste-formations')
+            day_headers = training_container.find_elements(By.TAG_NAME, 'h2')
 
-            # Now, the 'pairs' list contains pairs of (h2, ul) elements within the div with class "list"
-            for pair in pairs:
-                print("----------------START TRAINING----------------")
-                h2 = pair[0].text
-                ul = pair[1]
+            for day_header in day_headers:
+                date = day_header.text
+                ul_element = day_header.find_elements(By.XPATH, './following-sibling::ul')
 
-                # Find li elements within the ul
-                li_elements = ul.find_elements(By.XPATH, ".//li")
-                lis = [li.text for li in li_elements]
+                training_items = ul_element.find_elements(By.TAG_NAME, 'li')
+                for training_item in training_items:
+                    # Extract relevant information from each training item
+                    training_name = training_item.find_element(By.CSS_SELECTOR, 'strong').text
+                    location = training_item.find_element(By.CSS_SELECTOR, 'strong')[1].text
+                    time = training_item.find_element(By.CSS_SELECTOR, 'span').text
 
-                print(f"H2: {h2}")
-                # print(f"UL: {ul}")
-                try:
-                    geographical_elements = lis[0]
-                    print(f"OK1 : {geographical_elements}")
-                except (IndexError, NoSuchElementException):
-                    print("KO : no geographical_elements")
-                try:
-                    hours = lis[1]
-                    print(f"OK2 : {hours}")
-                except (IndexError, NoSuchElementException):
-                    print("KO : no hours elements")
-                try:
-                    available_places = lis[2]
-                    print(f"OK3 : {available_places}")
-                except (IndexError, NoSuchElementException):
-                    print("KO : no available_place part")
-                print("----------------END TRAINING----------------")
-            input()
+                    # Print the information or store it as needed
+                    print(f"Date: {date}")
+                    print(f"Training: {training_name}")
+                    print(f"Location: {location}")
+                    print(f"Time: {time}")
+                    print("\n")
+                    input()
         except NoSuchElementException:
             print("KO : no list of trainings on this page")
 
