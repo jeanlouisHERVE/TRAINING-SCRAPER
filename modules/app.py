@@ -32,7 +32,7 @@ def start_prompt():
     user_input = input(menu_prompt)
     while user_input != "2":
         if user_input == "1":
-            add_trainings_crf.add_training(connection)
+            add_trainings_crf.add_trainings(connection)
         else:
             print("Invalid input, please try again!")
 
