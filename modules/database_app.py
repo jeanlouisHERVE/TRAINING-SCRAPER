@@ -13,7 +13,16 @@ WINDOWS_DATABASE_PATH = "c:\\Users\\jeanl\\OneDrive\\Bureau\\TRAINING-SCRAPER\\d
 LINUX_DATABASE_PATH = "/home/jean-louis/Bureau/TRAINING-SCRAPER/database/trainingscraper.db"
 
 config_params = config()
-connection = psycopg2.connect(**config_params)
+
+
+def connect_database(config_params):
+    try:
+        connection = psycopg2.connect(**config_params)
+        return connection
+    except psycopg2.OperationalError as e:
+        print(f"psycopg2.OperationalError: {e}")
+        return None
+
 
 # create database
 CREATE_COURSE_TABLE = """CREATE TABLE IF NOT EXISTS courses (
@@ -105,7 +114,7 @@ DELETE_TOWN_TABLE = "DELETE FROM towns;"
 DELETE_ORGANISMS_TABLE = "DELETE FROM organism;"
 
 
-def create_tables():
+def create_tables(connection):
     with connection.cursor() as cursor:
         print("Creating tables...")
         cursor.execute(CREATE_COURSE_TABLE)
@@ -117,7 +126,7 @@ def create_tables():
         print("Tables created.")
 
 
-def delete_tables():
+def delete_tables(connection):
     with connection.cursor() as cursor:
         print("deleting tables...")
         cursor.execute(DELETE_COURSE_TABLE)
