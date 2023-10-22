@@ -82,7 +82,9 @@ def add_trainings():
                 town = re.sub(pattern_retrieve_numbers, '', location)
                 time = training_item.find_element(By.CSS_SELECTOR, 'span').text
 
-                print(f"Date: {organism}")
+                print(f"Organism: {organism}")
+                if not database_app.get_organism_from_name(organism):
+                    database_app.add_organism(organism)
                 print(f"Date: {date}")
                 print(f"Training: {training_name}")
                 print(f"Location: {location}")
@@ -90,7 +92,7 @@ def add_trainings():
                 if department_number:
                     department_name = functions.get_department_name(department_number)
                 print(f"department_number: {department_name}")
-                if not database_app.get_departments_from_number(department_number):
+                if not database_app.get_department_from_number(department_number):
                     database_app.add_department(department_number)
                 print(f"town: {town}")
                 print(f"Time: {time}")

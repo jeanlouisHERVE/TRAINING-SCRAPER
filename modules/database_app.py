@@ -115,6 +115,7 @@ GET_DEPARTMENT_FROM_NUMBER = "SELECT * FROM departments WHERE number = ?;"
 GET_TOWNS = "SELECT * FROM towns;"
 GET_TYPES = "SELECT * FROM types;"
 GET_ORGANISMS = "SELECT * FROM organisms;"
+GET_ORGANISM_FROM_NAME = "SELECT * FROM organisms WHERE name = ?;"
 
 # update data
 UPDATE_COURSE = """UPDATE trainings
@@ -289,7 +290,7 @@ def get_departments():
         return departments
 
 
-def get_departments_from_number(number: str):
+def get_department_from_number(number: str):
     with connection.cursor() as cursor:
         cursor.execute(GET_DEPARTMENT_FROM_NUMBER, (number,))
         department = cursor.fetchone()
@@ -308,3 +309,10 @@ def get_organisms():
         cursor.execute(GET_ORGANISMS)
         organisms = cursor.fetchall()
         return organisms
+
+
+def get_organism_from_name(name: str):
+    with connection.cursor() as cursor:
+        cursor.execute(GET_ORGANISM_FROM_NAME, (name,))
+        department = cursor.fetchone()
+        return department
