@@ -13,7 +13,7 @@ from config import config
 config_params = config()
 connection = database_app.connect_database(config_params)
 
-database_app.create_tables()
+database_app.create_tables(connection)
 
 # get data from .env file
 load_dotenv()
@@ -32,7 +32,7 @@ def start_prompt():
     user_input = input(menu_prompt)
     while user_input != "2":
         if user_input == "1":
-            add_trainings_crf.add_trainings()
+            add_trainings_crf.add_training(connection)
         else:
             print("Invalid input, please try again!")
 

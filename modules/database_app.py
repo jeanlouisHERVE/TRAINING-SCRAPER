@@ -19,8 +19,7 @@ def connect_database(config_params):
         connection = psycopg2.connect(**config_params)
         return connection
     except psycopg2.OperationalError as e:
-        print(f"psycopg2.OperationalError: {e}")
-        return None
+        raise ConnectionError(f"Database connection failed: {e}")
 
 
 connection = connect_database(config_params)
