@@ -107,11 +107,11 @@ UPDATE_COURSE = """UPDATE trainings
 
 
 # delete data
-DELETE_COURSE_TABLE = "DELETE FROM courses;"
-DELETE_DATE_TABLE = "DELETE FROM dates;"
-DELETE_TRAINING_TABLE = "DELETE FROM trainings;"
-DELETE_DEPARTMENT_TABLE = "DELETE FROM departments;"
-DELETE_TOWN_TABLE = "DELETE FROM towns;"
+DELETE_COURSES_TABLE = "DELETE FROM courses;"
+DELETE_DATES_TABLE = "DELETE FROM dates;"
+DELETE_TRAININGS_TABLE = "DELETE FROM trainings;"
+DELETE_DEPARTMENTS_TABLE = "DELETE FROM departments;"
+DELETE_TOWNS_TABLE = "DELETE FROM towns;"
 DELETE_ORGANISMS_TABLE = "DELETE FROM organism;"
 
 
@@ -130,11 +130,11 @@ def create_tables(connection):
 def delete_tables(connection):
     with connection.cursor() as cursor:
         print("deleting tables...")
-        cursor.execute(DELETE_COURSE_TABLE)
-        cursor.execute(DELETE_DATE_TABLE)
-        cursor.execute(DELETE_TRAINING_TABLE)
-        cursor.execute(DELETE_DEPARTMENT_TABLE)
-        cursor.execute(DELETE_TOWN_TABLE)
+        cursor.execute(DELETE_COURSES_TABLE)
+        cursor.execute(DELETE_DATES_TABLE)
+        cursor.execute(DELETE_TRAININGS_TABLE)
+        cursor.execute(DELETE_DEPARTMENTS_TABLE)
+        cursor.execute(DELETE_TOWNS_TABLE)
         cursor.execute(DELETE_ORGANISMS_TABLE)
         print("Tables deleted.")
 
