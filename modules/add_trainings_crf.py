@@ -63,13 +63,15 @@ def add_trainings():
         # check an agree the terms section exists
         try:
             training_container = driver.find_element(By.CSS_SELECTOR, 'div.liste-formations')
+            print("training_container :", training_container)
             day_headers = training_container.find_elements(By.TAG_NAME, 'h2')
-
+            print("day_headers :", day_headers)
             for day_header in day_headers:
                 date = day_header.text
+                print("date :", date)
                 ul_element = day_header.find_elements(By.XPATH, './following-sibling::ul')
-
-                training_items = ul_element.find_elements(By.TAG_NAME, 'li')
+                print("ul_element :", ul_element)
+                training_items = ul_element.find_elements(By.CSS_SELECTOR, 'li')
                 for training_item in training_items:
                     training_name = training_item.find_element(By.CSS_SELECTOR, 'strong').text
                     location = training_item.find_element(By.CSS_SELECTOR, 'strong')[1].text
