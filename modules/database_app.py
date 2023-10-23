@@ -349,56 +349,128 @@ def add_organism(
 
 
 def get_courses():
-    with connection.cursor() as cursor:
-        connection.execute(GET_COURSES)
-        courses = cursor.fetchall()
-        return courses
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_COURSES)
+        result = cur.fetchall()
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def get_dates():
-    with connection.cursor() as cursor:
-        cursor.execute(GET_DATES)
-        dates = cursor.fetchall()
-        return dates
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_COURSES)
+        result = cur.fetchall()
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def get_trainings():
-    with connection.cursor() as cursor:
-        cursor.execute(GET_TRAININGS)
-        trainings = cursor.fetchall()
-        return trainings
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_COURSES)
+        result = cur.fetchall()
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def get_departments():
-    with connection.cursor() as cursor:
-        cursor.execute(GET_DEPARTMENTS)
-        departments = cursor.fetchall()
-        return departments
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_COURSES)
+        result = cur.fetchall()
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def get_department_from_number(number: str):
-    with connection.cursor() as cursor:
-        cursor.execute(GET_DEPARTMENT_FROM_NUMBER, (number,))
-        department = cursor.fetchone()
-        return department
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_DEPARTMENT_FROM_NUMBER, (number,))
+        result = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def get_towns():
-    with connection.cursor() as cursor:
-        cursor.execute(GET_TOWNS)
-        towns = cursor.fetchall()
-        return towns
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_COURSES)
+        result = cur.fetchall()
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def get_organisms():
-    with connection.cursor() as cursor:
-        cursor.execute(GET_ORGANISMS)
-        organisms = cursor.fetchall()
-        return organisms
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_COURSES)
+        result = cur.fetchall()
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def get_organism_from_name(name: str):
-    with connection.cursor() as cursor:
-        cursor.execute(GET_ORGANISM_FROM_NAME, (name,))
-        department = cursor.fetchone()
-        return department
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_ORGANISM_FROM_NAME, (name,))
+        result = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
