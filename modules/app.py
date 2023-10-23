@@ -8,12 +8,8 @@ from dotenv import load_dotenv
 # own packages
 import database_app
 import add_trainings_crf
-from config import config
 
-config_params = config()
-connection = database_app.connect_database(config_params)
-
-database_app.create_tables(connection)
+database_app.create_tables()
 
 # get data from .env file
 load_dotenv()

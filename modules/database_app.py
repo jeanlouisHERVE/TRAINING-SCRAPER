@@ -23,9 +23,6 @@ def connect_database(config_params):
         raise ConnectionError(f"Database connection failed: {e}")
 
 
-connection = connect_database(config_params)
-
-
 # create database
 CREATE_COURSES_TABLE = """CREATE TABLE IF NOT EXISTS courses (
                                 id SERIAL NOT NULL PRIMARY KEY,
@@ -133,17 +130,30 @@ DELETE_TYPES_TABLE = "DELETE FROM types;"
 DELETE_ORGANISMS_TABLE = "DELETE FROM organisms;"
 
 
-def create_tables(connection):
-    with connection.cursor() as cursor:
+def create_tables():
+    commands = (CREATE_DATES_TABLE,
+                CREATE_DATES_TABLE,
+                CREATE_TRAININGS_TABLE,
+                CREATE_DEPARTMENTS_TABLE,
+                CREATE_TOWNS_TABLE,
+                CREATE_TYPES_TABLE,
+                CREATE_ORGANISMS_TABLE,
+                CREATE_COURSES_TABLE)
+    conn = None
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
         print("Creating tables...")
-        cursor.execute(CREATE_DATES_TABLE)
-        cursor.execute(CREATE_TRAININGS_TABLE)
-        cursor.execute(CREATE_DEPARTMENTS_TABLE)
-        cursor.execute(CREATE_TOWNS_TABLE)
-        cursor.execute(CREATE_TYPES_TABLE)
-        cursor.execute(CREATE_ORGANISMS_TABLE)
-        cursor.execute(CREATE_COURSES_TABLE)
+        for command in commands:
+            cur.execute(command)
         print("Tables created.")
+        cur.close()
+        conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def delete_tables(connection):
@@ -183,7 +193,7 @@ def add_course(
                                             )
                            )
         connection.commit()
-        last_inserted_id = cursor.lastrowid
+        last_inserted_id = cursor.fetchone()[0]
     return last_inserted_id
 
 
@@ -199,7 +209,7 @@ def add_date(
                                             )
                            )
         connection.commit()
-        last_inserted_id = cursor.lastrowid
+        last_inserted_id = cursor.fetchone()[0]
     return last_inserted_id
 
 
@@ -213,7 +223,7 @@ def add_training(
                                             )
                            )
         connection.commit()
-        last_inserted_id = cursor.lastrowid
+        last_inserted_id = cursor.fetchone()[0]
     return last_inserted_id
 
 
@@ -227,7 +237,7 @@ def add_department(
                                             )
                            )
         connection.commit()
-        last_inserted_id = cursor.lastrowid
+        last_inserted_id = cursor.fetchone()[0]
     return last_inserted_id
 
 
@@ -239,7 +249,7 @@ def add_town(
                                             )
                            )
         connection.commit()
-        last_inserted_id = cursor.lastrowid
+        last_inserted_id = cursor.fetchone()[0]
     return last_inserted_id
 
 
@@ -253,7 +263,7 @@ def add_type(
                                             )
                            )
         connection.commit()
-        last_inserted_id = cursor.lastrowid
+        last_inserted_id = cursor.fetchone()[0]
     return last_inserted_id
 
 
@@ -265,7 +275,7 @@ def add_organism(
                                             )
                            )
         connection.commit()
-        last_inserted_id = cursor.lastrowid
+        last_inserted_id = cursor.fetchone()[0]
     return last_inserted_id
 
 
