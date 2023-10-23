@@ -182,6 +182,7 @@ def add_course(
                                             date_id
                                             )
                            )
+        connection.commit()
         last_inserted_id = cursor.lastrowid
     return last_inserted_id
 
@@ -197,6 +198,7 @@ def add_date(
                                             date
                                             )
                            )
+        connection.commit()
         last_inserted_id = cursor.lastrowid
     return last_inserted_id
 
@@ -210,6 +212,7 @@ def add_training(
                                             description,
                                             )
                            )
+        connection.commit()
         last_inserted_id = cursor.lastrowid
     return last_inserted_id
 
@@ -223,6 +226,7 @@ def add_department(
                                             number,
                                             )
                            )
+        connection.commit()
         last_inserted_id = cursor.lastrowid
     return last_inserted_id
 
@@ -234,6 +238,7 @@ def add_town(
                                             name,
                                             )
                            )
+        connection.commit()
         last_inserted_id = cursor.lastrowid
     return last_inserted_id
 
@@ -247,6 +252,7 @@ def add_type(
                                             description,
                                             )
                            )
+        connection.commit()
         last_inserted_id = cursor.lastrowid
     return last_inserted_id
 
@@ -258,6 +264,7 @@ def add_organism(
                                             name,
                                             )
                            )
+        connection.commit()
         last_inserted_id = cursor.lastrowid
     return last_inserted_id
 
