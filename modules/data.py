@@ -106,3 +106,6 @@ department_names = {
     "974": "La Réunion",
     "976": "Mayotte"
 }
+
+# regex
+regex_number = r'\d+'

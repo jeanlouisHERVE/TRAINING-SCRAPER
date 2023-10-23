@@ -84,8 +84,15 @@ def add_trainings():
 
                 print(f"Organism: {organism}")
                 if not database_app.get_organism_from_name(organism):
-                    database_app.add_organism(organism)
+                    organism_id = database_app.add_organism(organism)
+                else:
+                    organism_elements = database_app.get_organism_from_name(organism)
+                    organism_id = organism_elements[0]
+                print(f"Organism_id: {organism_id}")
                 print(f"Date: {date}")
+                utc_date = functions.date_converter_french_date_to_utc_timestamp(date)
+                print(f"Date: {utc_date}")
+                if not 
                 print(f"Training: {training_name}")
                 print(f"Location: {location}")
                 print(f"department_number: {department_number}")

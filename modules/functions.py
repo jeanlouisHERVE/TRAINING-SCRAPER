@@ -27,16 +27,14 @@ def date_converter_french_date_to_utc_timestamp(french_date: str):
         "decembre": "12"
         }
 
-    regex_number = r'\d+'
-
     date_parts = french_date.split()
-    french_month = date_parts[1].lower()
+    french_month = date_parts[2].lower()
 
     if french_month in months:
         # extract numbers in day part
-        day_number = re.findall(regex_number, date_parts[0])[0]
+        day_number = re.findall(data.regex_number, date_parts[0])[0]
         number_month = months[french_month]
-        formatted_date = f"{day_number}-{number_month}-{date_parts[2]}"
+        formatted_date = f"{day_number}-{number_month}-{date_parts[3]}"
         dt_object = datetime.datetime.strptime(formatted_date, "%d-%m-%Y")
         utc_timestamp = dt_object.replace(tzinfo=pytz.UTC).timestamp()
         return utc_timestamp
