@@ -412,7 +412,7 @@ def get_departments():
             conn.close()
 
 
-def get_department_from_number(number: str):
+def get_department_from_number(number: int):
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()

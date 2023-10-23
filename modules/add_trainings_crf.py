@@ -78,7 +78,7 @@ def add_trainings():
                 strong_elements = training_item.find_elements(By.CSS_SELECTOR, 'strong')
                 training_name = strong_elements[0].text
                 location = strong_elements[1].text
-                department_number = int(re.findall(pattern_extract_department_numbers, location)[0])
+                department_number = str(re.findall(pattern_extract_department_numbers, location)[0])
                 town = re.sub(pattern_retrieve_numbers, '', location)
                 time = training_item.find_element(By.CSS_SELECTOR, 'span').text
 
@@ -99,9 +99,13 @@ def add_trainings():
                 print(f"department_number: {department_number}")
                 if department_number:
                     department_name = functions.get_department_name(department_number)
-                print(f"department_number: {department_name}")
+                print(f"department_name {department_name}")
                 if not database_app.get_department_from_number(department_number):
-                    database_app.add_department(department_number)
+                    department_id = database_app.add_department(department_number, department_name)
+                else:
+                    department_elements = database_app.get_department_from_number(department_number)
+                    department_id = department_elements[0]
+                print(f"department_id: {department_id}")
                 print(f"town: {town}")
                 print(f"Time: {time}")
                 print("\n")

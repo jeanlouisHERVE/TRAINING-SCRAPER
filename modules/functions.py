@@ -32,9 +32,12 @@ def date_converter_french_date_to_utc_timestamp(french_date: str):
 
     if french_month in months:
         # extract numbers in day part
-        day_number = re.findall(data.regex_number, date_parts[0])[0]
-        number_month = months[french_month]
-        formatted_date = f"{day_number}-{number_month}-{date_parts[3]}"
+        day_number = re.findall(data.regex_number, date_parts[1])[0]
+        month_number = months[french_month]
+        print("day_number", day_number)
+        print("month_number", month_number)
+        print("year", date_parts[3])
+        formatted_date = f"{day_number}-{month_number}-{date_parts[3]}"
         dt_object = datetime.datetime.strptime(formatted_date, "%d-%m-%Y")
         utc_timestamp = dt_object.replace(tzinfo=pytz.UTC).timestamp()
         return utc_timestamp
@@ -45,7 +48,8 @@ def date_converter_french_date_to_utc_timestamp(french_date: str):
 
 def get_department_name(department_number):
     try:
-        return data.department_names[department_number]
+        department_name = data.department_names[department_number]
+        return department_name
     except ValueError:
         print(f"KO : No department got the number {department_number}s")
 
