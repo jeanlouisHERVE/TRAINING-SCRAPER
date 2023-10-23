@@ -111,11 +111,11 @@ GET_COURSES = "SELECT * FROM courses;"
 GET_DATES = "SELECT * FROM dates;"
 GET_TRAININGS = "SELECT * FROM trainings;"
 GET_DEPARTMENTS = "SELECT * FROM departments;"
-GET_DEPARTMENT_FROM_NUMBER = "SELECT * FROM departments WHERE number = ?;"
+GET_DEPARTMENT_FROM_NUMBER = "SELECT * FROM departments WHERE number = %s;"
 GET_TOWNS = "SELECT * FROM towns;"
 GET_TYPES = "SELECT * FROM types;"
 GET_ORGANISMS = "SELECT * FROM organisms;"
-GET_ORGANISM_FROM_NAME = "SELECT * FROM organisms WHERE name = ?;"
+GET_ORGANISM_FROM_NAME = "SELECT * FROM organisms WHERE name = %s;"
 
 # update data
 UPDATE_COURSE = """UPDATE trainings

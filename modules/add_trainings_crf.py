@@ -69,7 +69,7 @@ def add_trainings():
             print('------------------START TRAINING------------------')
             date = day_header.text
             print("date :", date)
-            
+
             ul_element = day_header.find_element(By.XPATH, './following-sibling::ul')
             print("ul_element :", ul_element)
             training_items = ul_element.find_elements(By.CSS_SELECTOR, 'li')
@@ -92,7 +92,8 @@ def add_trainings():
                 print(f"Date: {date}")
                 utc_date = functions.date_converter_french_date_to_utc_timestamp(date)
                 print(f"Date: {utc_date}")
-                if not 
+                # if not
+                # TODO implement
                 print(f"Training: {training_name}")
                 print(f"Location: {location}")
                 print(f"department_number: {department_number}")
