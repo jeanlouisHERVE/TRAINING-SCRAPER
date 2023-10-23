@@ -156,17 +156,30 @@ def create_tables():
             conn.close()
 
 
-def delete_tables(connection):
-    with connection.cursor() as cursor:
-        print("deleting tables...")
-        cursor.execute(DELETE_COURSES_TABLE)
-        cursor.execute(DELETE_DATES_TABLE)
-        cursor.execute(DELETE_TRAININGS_TABLE)
-        cursor.execute(DELETE_DEPARTMENTS_TABLE)
-        cursor.execute(DELETE_TOWNS_TABLE)
-        cursor.execute(DELETE_TYPES_TABLE)
-        cursor.execute(DELETE_ORGANISMS_TABLE)
+def delete_tables():
+    commands = (DELETE_DATES_TABLE,
+                DELETE_DATES_TABLE,
+                DELETE_TRAININGS_TABLE,
+                DELETE_DEPARTMENTS_TABLE,
+                DELETE_TOWNS_TABLE,
+                DELETE_TYPES_TABLE,
+                DELETE_ORGANISMS_TABLE,
+                DELETE_COURSES_TABLE)
+    conn = None
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        print("Deleting tables...")
+        for command in commands:
+            cur.execute(command)
         print("Tables deleted.")
+        cur.close()
+        conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def add_course(
@@ -179,104 +192,160 @@ def add_course(
         organism_id: int,
         department_id: int,
         date_id: int):
-    with connection.cursor() as cursor:
-        connection.execute(INSERT_COURSE, (
-                                            places_available,
-                                            places_total,
-                                            price,
-                                            date_add_to_db,
-                                            town_id,
-                                            type_id,
-                                            organism_id,
-                                            department_id,
-                                            date_id
-                                            )
-                           )
-        connection.commit()
-        last_inserted_id = cursor.fetchone()[0]
-    return last_inserted_id
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(INSERT_COURSE, (
+                                    places_available,
+                                    places_total,
+                                    price,
+                                    date_add_to_db,
+                                    town_id,
+                                    type_id,
+                                    organism_id,
+                                    department_id,
+                                    date_id,
+                                    )
+                    )
+        last_inserted_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        return last_inserted_id
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def add_date(
                     hour_start: str,
                     hour_end: str,
                     date: float):
-    with connection.cursor() as cursor:
-        connection.execute(INSERT_DATE, (
-                                            hour_start,
-                                            hour_end,
-                                            date
-                                            )
-                           )
-        connection.commit()
-        last_inserted_id = cursor.fetchone()[0]
-    return last_inserted_id
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(INSERT_DATE, (
+                                    hour_start,
+                                    hour_end,
+                                    date
+                                    )
+                    )
+        last_inserted_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        return last_inserted_id
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def add_training(
                     name: str,
                     description: str):
-    with connection.cursor() as cursor:
-        connection.execute(INSERT_TRAINING, (
-                                            name,
-                                            description,
-                                            )
-                           )
-        connection.commit()
-        last_inserted_id = cursor.fetchone()[0]
-    return last_inserted_id
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(INSERT_TRAINING, (
+                                    name,
+                                    description,
+                                    )
+                    )
+        last_inserted_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        return last_inserted_id
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def add_department(
                     number: str,
                     name: str):
-    with connection.cursor() as cursor:
-        connection.execute(INSERT_DEPARTMENT, (
-                                            name,
-                                            number,
-                                            )
-                           )
-        connection.commit()
-        last_inserted_id = cursor.fetchone()[0]
-    return last_inserted_id
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(INSERT_DEPARTMENT, (
+                                        name,
+                                        number,
+                                        )
+                    )
+        last_inserted_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        return last_inserted_id
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def add_town(
                 name: str):
-    with connection.cursor() as cursor:
-        connection.execute(INSERT_TOWN, (
-                                            name,
-                                            )
-                           )
-        connection.commit()
-        last_inserted_id = cursor.fetchone()[0]
-    return last_inserted_id
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(INSERT_TOWN, (
+                                    name,
+                                    )
+                    )
+        last_inserted_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        return last_inserted_id
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def add_type(
                 name: str,
                 description: str):
-    with connection.cursor() as cursor:
-        connection.execute(INSERT_TYPE, (
-                                            name,
-                                            description,
-                                            )
-                           )
-        connection.commit()
-        last_inserted_id = cursor.fetchone()[0]
-    return last_inserted_id
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(INSERT_TYPE, (
+                                    name,
+                                    description,
+                                    )
+                    )
+        last_inserted_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        return last_inserted_id
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def add_organism(
                     name: str):
-    with connection.cursor() as cursor:
-        connection.execute(INSERT_ORGANISM, (
-                                            name,
-                                            )
-                           )
-        connection.commit()
-        last_inserted_id = cursor.fetchone()[0]
-    return last_inserted_id
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(INSERT_ORGANISM, (
+                                        name,
+                                        )
+                    )
+        last_inserted_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        return last_inserted_id
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def get_courses():
