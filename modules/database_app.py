@@ -134,6 +134,7 @@ UPDATE_COURSE = """UPDATE trainings
 # delete data
 DELETE_COURSES_TABLE = "DELETE FROM courses;"
 DELETE_DATES_TABLE = "DELETE FROM dates;"
+DELETE_HOURS_TABLE = "DELETE FROM hours;"
 DELETE_TRAININGS_TABLE = "DELETE FROM trainings;"
 DELETE_DEPARTMENTS_TABLE = "DELETE FROM departments;"
 DELETE_TOWNS_TABLE = "DELETE FROM towns;"
@@ -144,6 +145,7 @@ DELETE_ORGANISMS_TABLE = "DELETE FROM organisms;"
 def create_tables():
     commands = (CREATE_DATES_TABLE,
                 CREATE_DATES_TABLE,
+                CREATE_HOURS_TABLE,
                 CREATE_TRAININGS_TABLE,
                 CREATE_DEPARTMENTS_TABLE,
                 CREATE_TOWNS_TABLE,
@@ -170,6 +172,7 @@ def create_tables():
 def delete_tables():
     commands = (DELETE_DATES_TABLE,
                 DELETE_DATES_TABLE,
+                DELETE_HOURS_TABLE,
                 DELETE_TRAININGS_TABLE,
                 DELETE_DEPARTMENTS_TABLE,
                 DELETE_TOWNS_TABLE,
