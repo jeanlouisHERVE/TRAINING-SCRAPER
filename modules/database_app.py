@@ -383,6 +383,20 @@ def get_dates():
         if conn is not None:
             conn.close()
 
+def get_date_():
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_DATES)
+        result = cur.fetchall()
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 def get_trainings():
     try:
@@ -480,7 +494,7 @@ def get_types():
             conn.close()
 
 
-def get_types_from_name(name):
+def get_type_from_name(name):
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
