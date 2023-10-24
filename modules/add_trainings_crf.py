@@ -82,6 +82,7 @@ def add_trainings():
                 town = re.sub(pattern_retrieve_numbers, '', location)
                 time = training_item.find_element(By.CSS_SELECTOR, 'span').text
 
+                # organism
                 print(f"Organism: {organism}")
                 if not database_app.get_organism_from_name(organism):
                     organism_id = database_app.add_organism(organism)
@@ -89,13 +90,25 @@ def add_trainings():
                     organism_elements = database_app.get_organism_from_name(organism)
                     organism_id = organism_elements[0]
                 print(f"Organism_id: {organism_id}")
+
+                # date
                 print(f"Date: {date}")
                 utc_date = functions.date_converter_french_date_to_utc_timestamp(date)
                 print(f"Date: {utc_date}")
-                # if not
-                # TODO implement
+
+                # type
                 print(f"Training: {training_name}")
+                # TODO implement description
+                description = ""
+                if not database_app.get_type_from_name(training_name):
+                    type_id = database_app.add_type(training_name, description)
+                else:
+                    training_elements = database_app.get_type_from_name(training_name)
+                    type_id = training_elements[0]
+                print(f"type_id: {type_id}")
+
                 print(f"Location: {location}")
+                # department
                 print(f"department_number: {department_number}")
                 if department_number:
                     department_name = functions.get_department_name(department_number)
@@ -106,7 +119,17 @@ def add_trainings():
                     department_elements = database_app.get_department_from_number(department_number)
                     department_id = department_elements[0]
                 print(f"department_id: {department_id}")
+
+                # town
                 print(f"town: {town}")
+                postcode = ""
+                # TODO implement postcode
+                if not database_app.get_town_from_name(town):
+                    town_id = database_app.add_town(postcode, town, department_id)
+                else:
+                    town_elements = database_app.get_town_from_name(town)
+                    town_id = town_elements[0]
+                print(f"town_id: {town_id}")
                 print(f"Time: {time}")
                 print("\n")
             print('------------------END TRAINING------------------')

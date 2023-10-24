@@ -33,12 +33,10 @@ CREATE_COURSES_TABLE = """CREATE TABLE IF NOT EXISTS courses (
                                 town_id INTEGER,
                                 type_id INTEGER,
                                 organism_id INTEGER,
-                                department_id INTEGER,
                                 date_id INTEGER,
                                 FOREIGN KEY (town_id) REFERENCES towns(id),
                                 FOREIGN KEY (type_id) REFERENCES types(id),
                                 FOREIGN KEY (organism_id) REFERENCES organisms(id),
-                                FOREIGN KEY (department_id) REFERENCES departments(id),
                                 FOREIGN KEY (date_id) REFERENCES dates(id) ON DELETE CASCADE);"""
 
 CREATE_DATES_TABLE = """CREATE TABLE IF NOT EXISTS dates (
@@ -60,7 +58,9 @@ CREATE_DEPARTMENTS_TABLE = """CREATE TABLE IF NOT EXISTS departments (
 CREATE_TOWNS_TABLE = """CREATE TABLE IF NOT EXISTS towns (
                             id SERIAL NOT NULL PRIMARY KEY,
                             postcode TEXT,
-                            name TEXT UNIQUE);"""
+                            name TEXT UNIQUE
+                            department_id INTEGER
+                            FOREIGN KEY (department_id) REFERENCES departments(id));"""
 
 CREATE_TYPES_TABLE = """CREATE TABLE IF NOT EXISTS types (
                             id SERIAL NOT NULL PRIMARY KEY,
@@ -75,8 +75,8 @@ CREATE_ORGANISMS_TABLE = """CREATE TABLE IF NOT EXISTS organisms (
 INSERT_COURSE = """
                     INSERT INTO courses (places_available, places_total, price,
                     date_add_to_db, town_id, training_id,
-                    organism_id, department_id, date_id)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    organism_id, date_id)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;"""
 INSERT_DATE = """
                 INSERT INTO dates (id, hour_start, hour_end)
@@ -91,8 +91,8 @@ INSERT_DEPARTMENT = """
                         VALUES (%s, %s)
                         RETURNING id;"""
 INSERT_TOWN = """
-                INSERT INTO towns (postcode, name)
-                VALUES (%s, %s)
+                INSERT INTO towns (postcode, name, department_id)
+                VALUES (%s, %s, %s)
                 RETURNING id;"""
 INSERT_TYPE = """
                 INSERT INTO towns (name, description)
@@ -110,7 +110,9 @@ GET_TRAININGS = "SELECT * FROM trainings;"
 GET_DEPARTMENTS = "SELECT * FROM departments;"
 GET_DEPARTMENT_FROM_NUMBER = "SELECT * FROM departments WHERE number = %s;"
 GET_TOWNS = "SELECT * FROM towns;"
+GET_TOWN_FROM_NAME = "SELECT * FROM towns WHERE name = %s;"
 GET_TYPES = "SELECT * FROM types;"
+GET_TYPE_FROM_NAME = "SELECT * FROM types WHERE name = %s;"
 GET_ORGANISMS = "SELECT * FROM organisms;"
 GET_ORGANISM_FROM_NAME = "SELECT * FROM organisms WHERE name = %s;"
 
@@ -190,7 +192,6 @@ def add_course(
         town_id: int,
         type_id: int,
         organism_id: int,
-        department_id: int,
         date_id: int):
     try:
         conn = connect_database(config_params)
@@ -203,7 +204,6 @@ def add_course(
                                     town_id,
                                     type_id,
                                     organism_id,
-                                    department_id,
                                     date_id,
                                     )
                     )
@@ -287,12 +287,16 @@ def add_department(
 
 
 def add_town(
-                name: str):
+                postcode: str,
+                name: str,
+                department_id: int):
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
         cur.execute(INSERT_TOWN, (
+                                    postcode,
                                     name,
+                                    department_id,
                                     )
                     )
         last_inserted_id = cur.fetchone()[0]
@@ -368,7 +372,7 @@ def get_dates():
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
-        cur.execute(GET_COURSES)
+        cur.execute(GET_DATES)
         result = cur.fetchall()
         conn.commit()
         cur.close()
@@ -400,7 +404,7 @@ def get_departments():
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
-        cur.execute(GET_COURSES)
+        cur.execute(GET_DEPARTMENTS)
         result = cur.fetchall()
         conn.commit()
         cur.close()
@@ -432,8 +436,56 @@ def get_towns():
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
-        cur.execute(GET_COURSES)
+        cur.execute(GET_TOWNS)
         result = cur.fetchall()
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+def get_town_from_name(name):
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_TOWN_FROM_NAME, (name,))
+        result = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+def get_types():
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_TYPES)
+        result = cur.fetchall()
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+def get_types_from_name(name):
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_TYPE_FROM_NAME, (name,))
+        result = cur.fetchone()[0]
         conn.commit()
         cur.close()
         return result
