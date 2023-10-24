@@ -41,7 +41,11 @@ CREATE_COURSES_TABLE = """CREATE TABLE IF NOT EXISTS courses (
 
 CREATE_DATES_TABLE = """CREATE TABLE IF NOT EXISTS dates (
                             id SERIAL NOT NULL PRIMARY KEY,
-                            date TIMESTAMP,
+                            date TIMESTAMP);"""
+
+
+CREATE_HOURS_TABLE = """CREATE TABLE IF NOT EXISTS hours (
+                            id SERIAL NOT NULL PRIMARY KEY,
                             hour_start TEXT,
                             hour_end TEXT);"""
 
@@ -79,9 +83,14 @@ INSERT_COURSE = """
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;"""
 INSERT_DATE = """
-                INSERT INTO dates (date, hour_start, hour_end)
+                INSERT INTO dates (date, hour_id)
                 VALUES (%s, %s, %s)
                 RETURNING id;"""
+INSERT_HOUR = """
+                INSERT INTO hours (hour_start, hour_end)
+                VALUES (%s, %s, %s)
+                RETURNING id;
+                """
 INSERT_TRAINING = """
                     INSERT INTO trainings (name, description)
                     VALUES (%s, %s)
