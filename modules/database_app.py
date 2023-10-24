@@ -41,9 +41,9 @@ CREATE_COURSES_TABLE = """CREATE TABLE IF NOT EXISTS courses (
 
 CREATE_DATES_TABLE = """CREATE TABLE IF NOT EXISTS dates (
                             id SERIAL NOT NULL PRIMARY KEY,
+                            date TIMESTAMP,
                             hour_start TEXT,
-                            hour_end TEXT,
-                            date TIMESTAMP);"""
+                            hour_end TEXT);"""
 
 CREATE_TRAININGS_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
                                 id SERIAL NOT NULL PRIMARY KEY,
@@ -79,7 +79,7 @@ INSERT_COURSE = """
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;"""
 INSERT_DATE = """
-                INSERT INTO dates (id, hour_start, hour_end)
+                INSERT INTO dates (date, hour_start, hour_end)
                 VALUES (%s, %s, %s)
                 RETURNING id;"""
 INSERT_TRAINING = """
@@ -219,16 +219,16 @@ def add_course(
 
 
 def add_date(
+                    date: float,
                     hour_start: str,
-                    hour_end: str,
-                    date: float):
+                    hour_end: str):
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
         cur.execute(INSERT_DATE, (
+                                    date,
                                     hour_start,
                                     hour_end,
-                                    date
                                     )
                     )
         last_inserted_id = cur.fetchone()[0]
