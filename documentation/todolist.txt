@@ -15,3 +15,6 @@ Mise en place de l'architecture
     pg_ctl reload -D "C:\Program Files\PostgreSQL\15\data"
     pg_ctl stop -D "C:\Program Files\PostgreSQL\15\data"
     pg_ctl start -D "C:\Program Files\PostgreSQL\15\data"
+    psql -U desired_postgres_user : changer d'utilisateur
+    psql -U myuser -d mydb : se connecter à une db 
+    \dt : consulter les tables
