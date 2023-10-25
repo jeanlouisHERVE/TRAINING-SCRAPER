@@ -6,3 +6,12 @@ Mise en place de l'architecture
 
 22/10/2023
     ne pas oublier de définir le mot de passe de l'user postgres dans PGadmin4
+
+25/10/2023
+    essais pour configurer l'utilisateur dans psql 
+    modification de pg_hba.conf 
+    modification de pg_ident.conf
+    dans powershell admin
+    pg_ctl reload -D "C:\Program Files\PostgreSQL\15\data"
+    pg_ctl stop -D "C:\Program Files\PostgreSQL\15\data"
+    pg_ctl start -D "C:\Program Files\PostgreSQL\15\data"
