@@ -33,26 +33,27 @@ CREATE_COURSES_TABLE = """CREATE TABLE IF NOT EXISTS courses (
                                 town_id INTEGER,
                                 type_id INTEGER,
                                 organism_id INTEGER,
-                                date_id INTEGER,
                                 FOREIGN KEY (town_id) REFERENCES towns(id),
                                 FOREIGN KEY (type_id) REFERENCES types(id),
-                                FOREIGN KEY (organism_id) REFERENCES organisms(id),
-                                FOREIGN KEY (date_id) REFERENCES dates(id) ON DELETE CASCADE);"""
+                                FOREIGN KEY (organism_id) REFERENCES organisms(id));"""
 
 CREATE_DATES_TABLE = """CREATE TABLE IF NOT EXISTS dates (
                             id SERIAL NOT NULL PRIMARY KEY,
                             date TIMESTAMP);"""
 
+CREATE_COURSE_DATE_TIME = """CREATE TABLE IF NOT EXISTS course_date_times (
+                                course_id INTEGER,
+                                date_id INTEGER,
+                                hour_start TIME,
+                                hour_end TIME,
+                                PRIMARY KEY (course_id, date_id),
+                                FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+                                FOREIGN KEY (date_id) REFERENCES dates(id));"""
 
 CREATE_HOURS_TABLE = """CREATE TABLE IF NOT EXISTS hours (
                             id SERIAL NOT NULL PRIMARY KEY,
                             hour_start TEXT,
                             hour_end TEXT);"""
-
-CREATE_TRAININGS_TABLE = """CREATE TABLE IF NOT EXISTS trainings (
-                                id SERIAL NOT NULL PRIMARY KEY,
-                                name TEXT UNIQUE,
-                                description TEXT);"""
 
 CREATE_DEPARTMENTS_TABLE = """CREATE TABLE IF NOT EXISTS departments (
                                 id SERIAL NOT NULL PRIMARY KEY,
@@ -62,8 +63,8 @@ CREATE_DEPARTMENTS_TABLE = """CREATE TABLE IF NOT EXISTS departments (
 CREATE_TOWNS_TABLE = """CREATE TABLE IF NOT EXISTS towns (
                             id SERIAL NOT NULL PRIMARY KEY,
                             postcode TEXT,
-                            name TEXT UNIQUE
-                            department_id INTEGER
+                            name TEXT UNIQUE,
+                            department_id INTEGER,
                             FOREIGN KEY (department_id) REFERENCES departments(id));"""
 
 CREATE_TYPES_TABLE = """CREATE TABLE IF NOT EXISTS types (
@@ -78,23 +79,18 @@ CREATE_ORGANISMS_TABLE = """CREATE TABLE IF NOT EXISTS organisms (
 # add data
 INSERT_COURSE = """
                     INSERT INTO courses (places_available, places_total, price,
-                    date_add_to_db, town_id, training_id,
-                    organism_id, date_id)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    date_add_to_db, town_id, type_id,
+                    organism_id)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;"""
 INSERT_DATE = """
-                INSERT INTO dates (date, hour_id)
-                VALUES (%s, %s, %s)
+                INSERT INTO dates (date)
+                VALUES (%s)
                 RETURNING id;"""
-INSERT_HOUR = """
-                INSERT INTO hours (hour_start, hour_end)
-                VALUES (%s, %s, %s)
-                RETURNING id;
-                """
-INSERT_TRAINING = """
-                    INSERT INTO trainings (name, description)
-                    VALUES (%s, %s)
-                    RETURNING id;"""
+INSERT_COURSE_DATE_TIME = """
+                            INSERT INTO course_date_times (course_id, date_id,
+                            hour_start, hour_end)
+                            VALUES (%s, %s, %s, %s);"""
 INSERT_DEPARTMENT = """
                         INSERT INTO departments (number, name)
                         VALUES (%s, %s)
@@ -115,7 +111,7 @@ INSERT_ORGANISM = """
 # get data
 GET_COURSES = "SELECT * FROM courses;"
 GET_DATES = "SELECT * FROM dates;"
-GET_TRAININGS = "SELECT * FROM trainings;"
+GET_COURSE_DATE_TIME = "SELECT * FROM course_date_times WHERE course_id = %s;"
 GET_DEPARTMENTS = "SELECT * FROM departments;"
 GET_DEPARTMENT_FROM_NUMBER = "SELECT * FROM departments WHERE number = %s;"
 GET_TOWNS = "SELECT * FROM towns;"
@@ -134,8 +130,7 @@ UPDATE_COURSE = """UPDATE trainings
 # delete data
 DELETE_COURSES_TABLE = "DELETE FROM courses;"
 DELETE_DATES_TABLE = "DELETE FROM dates;"
-DELETE_HOURS_TABLE = "DELETE FROM hours;"
-DELETE_TRAININGS_TABLE = "DELETE FROM trainings;"
+DELETE_COURSE_DATE_TIME_TABLE = "DELETE FROM course_date_times;"
 DELETE_DEPARTMENTS_TABLE = "DELETE FROM departments;"
 DELETE_TOWNS_TABLE = "DELETE FROM towns;"
 DELETE_TYPES_TABLE = "DELETE FROM types;"
@@ -145,8 +140,7 @@ DELETE_ORGANISMS_TABLE = "DELETE FROM organisms;"
 def create_tables():
     commands = (CREATE_DATES_TABLE,
                 CREATE_DATES_TABLE,
-                CREATE_HOURS_TABLE,
-                CREATE_TRAININGS_TABLE,
+                CREATE_COURSE_DATE_TIME,
                 CREATE_DEPARTMENTS_TABLE,
                 CREATE_TOWNS_TABLE,
                 CREATE_TYPES_TABLE,
@@ -172,8 +166,7 @@ def create_tables():
 def delete_tables():
     commands = (DELETE_DATES_TABLE,
                 DELETE_DATES_TABLE,
-                DELETE_HOURS_TABLE,
-                DELETE_TRAININGS_TABLE,
+                DELETE_COURSE_DATE_TIME_TABLE,
                 DELETE_DEPARTMENTS_TABLE,
                 DELETE_TOWNS_TABLE,
                 DELETE_TYPES_TABLE,
@@ -254,21 +247,23 @@ def add_date(
             conn.close()
 
 
-def add_training(
-                    name: str,
-                    description: str):
+def add_course_date_time(
+                    course_id: int,
+                    date_id: int,
+                    hour_start: float,
+                    hour_end: float):
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
-        cur.execute(INSERT_TRAINING, (
-                                    name,
-                                    description,
+        cur.execute(INSERT_COURSE_DATE_TIME, (
+                                    course_id,
+                                    date_id,
+                                    hour_start,
+                                    hour_end,
                                     )
                     )
-        last_inserted_id = cur.fetchone()[0]
         conn.commit()
         cur.close()
-        return last_inserted_id
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
@@ -395,6 +390,7 @@ def get_dates():
         if conn is not None:
             conn.close()
 
+
 def get_date_():
     try:
         conn = connect_database(config_params)
@@ -410,11 +406,12 @@ def get_date_():
         if conn is not None:
             conn.close()
 
-def get_trainings():
+
+def get_course_date_time(course_id):
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
-        cur.execute(GET_COURSES)
+        cur.execute(GET_COURSE_DATE_TIME, (course_id,))
         result = cur.fetchall()
         conn.commit()
         cur.close()
