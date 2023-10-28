@@ -107,17 +107,6 @@ def add_trainings():
                     print(f"Date: {utc_date}")
                     print(f"date_id: {date_id}")
 
-                    # course_date_time
-                    print(f"Time: {time_element}")
-                    start_hour, end_hour = functions.extract_start_and_end_time(time_element)
-                    start_hour_timestamp = functions.add_clock_elements_to_utc_timestamp(utc_date, start_hour)
-                    end_hour_timestamp = functions.add_clock_elements_to_utc_timestamp(utc_date, end_hour)
-                    print(f"start_hour_timestamp: {start_hour_timestamp}")
-                    print(f"end_hour_timestamp: {end_hour_timestamp}")
-                    database_app.add_course_date_time()
-                    # TODO implement start and end times
-
-                    input()
                     # type
                     print(f"Training: {training_name}")
                     # TODO implement description
@@ -167,15 +156,25 @@ def add_trainings():
                     print("organism_id", organism_id)
 
                     if not database_app.get_course_id(organism_id, date_id, town_id, type_id):
-                        database_app.add_course(places_available,
-                                                places_total,
-                                                price,
-                                                date_id,
-                                                town_id,
-                                                type_id,
-                                                organism_id)
+                        course_id = database_app.add_course(places_available,
+                                                            places_total,
+                                                            price,
+                                                            date_id,
+                                                            town_id,
+                                                            type_id,
+                                                            organism_id)
                     else:
                         print("KO : Course already exists.")
+
+                    # course_date_time
+                    print(f"Time: {time_element}")
+                    start_hour, end_hour = functions.extract_start_and_end_time(time_element)
+                    start_hour_timestamp = functions.add_clock_elements_to_utc_timestamp(utc_date, start_hour)
+                    end_hour_timestamp = functions.add_clock_elements_to_utc_timestamp(utc_date, end_hour)
+                    print(f"start_hour_timestamp: {start_hour_timestamp}")
+                    print(f"end_hour_timestamp: {end_hour_timestamp}")
+                    database_app.add_course_date_time(course_id, date_id, town_id, type_id)
+
                 print('------------------END TRAINING------------------')
         except NoSuchElementException:
             print("KO : no list of trainings on this page")

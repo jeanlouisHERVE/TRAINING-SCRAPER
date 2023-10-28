@@ -19,16 +19,19 @@ load_dotenv()
 menu_prompt = """-- Menu --
 
 1) Add crf trainings
-2) Exit
+2) Delete database
+3) Exit
 
 Enter your choice: """
 
 
 def start_prompt():
     user_input = input(menu_prompt)
-    while user_input != "2":
+    while user_input != "3":
         if user_input == "1":
             add_trainings_crf.add_trainings()
+        elif user_input == "2":
+            database_app.delete_tables()
         else:
             print("Invalid input, please try again!")
 
