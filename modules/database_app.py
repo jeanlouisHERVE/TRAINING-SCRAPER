@@ -111,6 +111,7 @@ INSERT_ORGANISM = """
 # get data
 GET_COURSES = "SELECT * FROM courses;"
 GET_DATES = "SELECT * FROM dates;"
+GET_DATE = "SELECT * FROM dates WHERE date = %s;"
 GET_COURSE_DATE_TIME = "SELECT * FROM course_date_times WHERE course_id = %s;"
 GET_DEPARTMENTS = "SELECT * FROM departments;"
 GET_DEPARTMENT_FROM_NUMBER = "SELECT * FROM departments WHERE number = %s;"
@@ -391,12 +392,12 @@ def get_dates():
             conn.close()
 
 
-def get_date_():
+def get_date_(date: float):
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
-        cur.execute(GET_DATES)
-        result = cur.fetchall()
+        cur.execute(GET_DATE, (date,))
+        result = cur.fetchone()
         conn.commit()
         cur.close()
         return result
@@ -407,7 +408,7 @@ def get_date_():
             conn.close()
 
 
-def get_course_date_time(course_id):
+def get_course_date_time(course_id: int):
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
