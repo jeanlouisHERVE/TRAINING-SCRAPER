@@ -224,19 +224,11 @@ def add_course(
             conn.close()
 
 
-def add_date(
-                    date: float,
-                    hour_start: str,
-                    hour_end: str):
+def add_date(date: float):
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
-        cur.execute(INSERT_DATE, (
-                                    date,
-                                    hour_start,
-                                    hour_end,
-                                    )
-                    )
+        cur.execute(INSERT_DATE, (date,))
         last_inserted_id = cur.fetchone()[0]
         conn.commit()
         cur.close()
@@ -392,7 +384,7 @@ def get_dates():
             conn.close()
 
 
-def get_date_(date: float):
+def get_date(date: float):
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()

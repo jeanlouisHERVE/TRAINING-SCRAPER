@@ -99,7 +99,13 @@ def add_trainings():
                     # date
                     print(f"Date: {date}")
                     utc_date = functions.date_converter_french_date_to_utc_timestamp(date)
+                    if not database_app.get_date(date):
+                        date_id = database_app.add_date()
+                    else:
+                        date_elements = database_app.get_date(date)
+                        date_id = date_elements[0]
                     print(f"Date: {utc_date}")
+                    print(f"date_id: {date_id}")
 
                     # time
                     print(f"Time: {time}")
@@ -108,6 +114,8 @@ def add_trainings():
                     end_hour_timestamp = functions.add_clock_elements_to_utc_timestamp(utc_date, end_hour)
                     print(f"start_hour_timestamp: {start_hour_timestamp}")
                     print(f"end_hour_timestamp: {end_hour_timestamp}")
+                    database_app.add_course_date_time()
+                    # TODO implement start and end times
 
                     input()
                     # type
