@@ -110,6 +110,7 @@ INSERT_ORGANISM = """
 
 # get data
 GET_COURSES = "SELECT * FROM courses;"
+GET_COURSE_ID = "SELECT * FROM courses WHERE date_id = %s AND town_id = %s AND type_id = %s ;"
 GET_DATES = "SELECT * FROM dates;"
 GET_DATE = "SELECT * FROM dates WHERE date = %s;"
 GET_COURSE_DATE_TIME = "SELECT * FROM course_date_times WHERE course_id = %s;"
@@ -368,6 +369,22 @@ def get_courses():
             conn.close()
 
 
+def get_course_id(date_id: int, town_id: int, type_id: int):
+    try:
+        conn = connect_database(config_params)
+        cur = conn.cursor()
+        cur.execute(GET_COURSE_ID, (date_id, town_id, type_id,))
+        result = cur.fetchone()
+        conn.commit()
+        cur.close()
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
 def get_dates():
     try:
         conn = connect_database(config_params)
@@ -542,3 +559,18 @@ def get_organism_from_name(name: str):
     finally:
         if conn is not None:
             conn.close()
+
+
+def course_exists(date, town, type):
+    date_id = get_date(date)[0]
+    town_id = get_town_from_name(town)[0]
+    type_id = get_type_from_name(type)[0]
+    print("date_id", date_id)
+    print("town_id", town_id)
+    print("type_id", type_id)
+    try:
+        get_course_id(date_id, town_id, type_id)
+        return True
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL:", error)
+        return False

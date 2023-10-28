@@ -85,7 +85,7 @@ def add_trainings():
                     location = strong_elements[1].text
                     department_number = str(re.findall(pattern_extract_department_numbers, location)[0])
                     town = re.sub(pattern_retrieve_numbers, '', location)
-                    time = training_item.find_element(By.CSS_SELECTOR, 'span').text
+                    time_element = training_item.find_element(By.CSS_SELECTOR, 'span').text
 
                     # organism
                     print(f"Organism: {organism}")
@@ -107,9 +107,9 @@ def add_trainings():
                     print(f"Date: {utc_date}")
                     print(f"date_id: {date_id}")
 
-                    # time
-                    print(f"Time: {time}")
-                    start_hour, end_hour = functions.extract_start_and_end_time(time)
+                    # course_date_time
+                    print(f"Time: {time_element}")
+                    start_hour, end_hour = functions.extract_start_and_end_time(time_element)
                     start_hour_timestamp = functions.add_clock_elements_to_utc_timestamp(utc_date, start_hour)
                     end_hour_timestamp = functions.add_clock_elements_to_utc_timestamp(utc_date, end_hour)
                     print(f"start_hour_timestamp: {start_hour_timestamp}")
@@ -152,7 +152,10 @@ def add_trainings():
                         town_elements = database_app.get_town_from_name(town)
                         town_id = town_elements[0]
                     print(f"town_id: {town_id}")
-                    print(f"Time: {time}")
+                    
+                    if not database_app.get_course_id(date_id, town_id, type_id):
+                        database_app.add_course()
+                    
                     print("\n")
                 print('------------------END TRAINING------------------')
         except NoSuchElementException:
