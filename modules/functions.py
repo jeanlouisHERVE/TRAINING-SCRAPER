@@ -43,6 +43,44 @@ def get_day_month_year_from_date(date):
         raise ValueError(f"KO : The provided French month '{french_month}' does not exist")
 
 
+def extract_start_and_end_time(time: str):
+    try:
+        # Check if time is a string
+        if not isinstance(time, str):
+            raise ValueError("Input should be a string")
+        pattern = r'\d{2}h\d{2}'
+        matches = re.findall(pattern, time)
+        if len(matches) >= 2:
+            start_hour = matches[0]
+            end_hour = matches[1]
+            print("start_hour", start_hour)
+            print("end_hour", end_hour)
+            return start_hour, end_hour
+        else:
+            raise ValueError("No matching start and end times found")
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+def get_hours_and_minutes(clock_elements: str):
+    try:
+        if not isinstance(clock_elements, str):
+            raise ValueError("Input should be a string")
+        pattern = r'(\d{2})h(\d{2})'
+        match = re.search(pattern, clock_elements)
+
+        if match:
+            hours = int(match.group(1))
+            minutes = int(match.group(2))
+            print("Hours:", hours)
+            print("Minutes:", minutes)
+            return hours, minutes
+        else:
+            raise ValueError("No valid time format found in the string")
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
 def date_converter_french_date_to_utc_timestamp(french_date: str):
     try:
         day, month, year = get_day_month_year_from_date(french_date)
@@ -52,6 +90,20 @@ def date_converter_french_date_to_utc_timestamp(french_date: str):
         return utc_timestamp
     except ValueError as e:
         return f"KO: {str(e)}"
+
+
+def add_clock_elements_to_utc_timestamp(utc_timestamp, clock_elements):
+    try:
+        if not isinstance(utc_timestamp, (int, float)):
+            raise ValueError("utc_timestamp should be a numeric value")
+
+        hours_to_add, minutes_to_add = get_hours_and_minutes(clock_elements)
+        utc_datetime = datetime.datetime.utcfromtimestamp(utc_timestamp)
+        new_datetime = utc_datetime + datetime.timedelta(hours=hours_to_add, minutes=minutes_to_add)
+        new_utc_timestamp = new_datetime.replace(tzinfo=pytz.UTC).timestamp()
+        return new_utc_timestamp
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 
 def get_department_name(department_number):
