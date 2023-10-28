@@ -152,11 +152,30 @@ def add_trainings():
                         town_elements = database_app.get_town_from_name(town)
                         town_id = town_elements[0]
                     print(f"town_id: {town_id}")
-                    
-                    if not database_app.get_course_id(date_id, town_id, type_id):
-                        database_app.add_course()
-                    
-                    print("\n")
+
+                    print("---------RECAP COURSE DATA---------")
+                    places_available = 0
+                    places_total = 0
+                    price = 0
+
+                    print("places_available", places_available)
+                    print("places_total", places_total)
+                    print("price", price)
+                    print("date_id", date_id)
+                    print("town_id", town_id)
+                    print("type_id", type_id)
+                    print("organism_id", organism_id)
+
+                    if not database_app.get_course_id(organism_id, date_id, town_id, type_id):
+                        database_app.add_course(places_available,
+                                                places_total,
+                                                price,
+                                                date_id,
+                                                town_id,
+                                                type_id,
+                                                organism_id)
+                    else:
+                        print("KO : Course already exists.")
                 print('------------------END TRAINING------------------')
         except NoSuchElementException:
             print("KO : no list of trainings on this page")

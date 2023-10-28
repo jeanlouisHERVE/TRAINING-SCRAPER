@@ -110,7 +110,7 @@ INSERT_ORGANISM = """
 
 # get data
 GET_COURSES = "SELECT * FROM courses;"
-GET_COURSE_ID = "SELECT * FROM courses WHERE date_id = %s AND town_id = %s AND type_id = %s ;"
+GET_COURSE_ID = "SELECT * FROM courses WHERE organism_id = %s AND date_id = %s AND town_id = %s AND type_id = %s ;"
 GET_DATES = "SELECT * FROM dates;"
 GET_DATE = "SELECT * FROM dates WHERE date = %s;"
 GET_COURSE_DATE_TIME = "SELECT * FROM course_date_times WHERE course_id = %s;"
@@ -369,11 +369,11 @@ def get_courses():
             conn.close()
 
 
-def get_course_id(date_id: int, town_id: int, type_id: int):
+def get_course_id(organism_id: int, date_id: int, town_id: int, type_id: int):
     try:
         conn = connect_database(config_params)
         cur = conn.cursor()
-        cur.execute(GET_COURSE_ID, (date_id, town_id, type_id,))
+        cur.execute(GET_COURSE_ID, (organism_id, date_id, town_id, type_id,))
         result = cur.fetchone()
         conn.commit()
         cur.close()
