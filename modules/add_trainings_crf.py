@@ -102,7 +102,6 @@ def add_trainings():
                     print(f"Date: {utc_date}")
 
                     # time
-                    # 09h00 — 17h00
                     print(f"Time: {time}")
                     start_hour, end_hour = functions.extract_start_and_end_time(time)
                     start_hour_timestamp = functions.add_clock_elements_to_utc_timestamp(utc_date, start_hour)
