@@ -61,7 +61,6 @@ def add_trainings():
         print(f"------------------Add_crf_training_Start : {department_number}------------------")
         driver.get("https://inscription-formation.croix-rouge.fr/?dep={}".format(department_number))
         driver.implicitly_wait(5)
-        input()
         # check an agree the terms section exists
         check_accept_section("button.onetrust-close-btn-handler")
         # collect data
@@ -100,7 +99,7 @@ def add_trainings():
                     print(f"Date: {date}")
                     utc_date = functions.date_converter_french_date_to_utc_timestamp(date)
                     if not database_app.get_date(date):
-                        date_id = database_app.add_date()
+                        date_id = database_app.add_date(utc_date)
                     else:
                         date_elements = database_app.get_date(date)
                         date_id = date_elements[0]
@@ -146,6 +145,7 @@ def add_trainings():
                     places_available = 0
                     places_total = 0
                     price = 0
+                    date_add_to_db = 0
 
                     print("places_available", places_available)
                     print("places_total", places_total)
@@ -159,6 +159,7 @@ def add_trainings():
                         course_id = database_app.add_course(places_available,
                                                             places_total,
                                                             price,
+                                                            date_add_to_db,
                                                             date_id,
                                                             town_id,
                                                             type_id,
@@ -173,6 +174,11 @@ def add_trainings():
                     end_hour_timestamp = functions.add_clock_elements_to_utc_timestamp(utc_date, end_hour)
                     print(f"start_hour_timestamp: {start_hour_timestamp}")
                     print(f"end_hour_timestamp: {end_hour_timestamp}")
+                    print(f"course_id: {course_id}")
+                    print(f"date_id: {date_id}")
+                    print(f"town_id: {town_id}")
+                    print(f"type_id: {type_id}")
+                    input()
                     database_app.add_course_date_time(course_id, date_id, town_id, type_id)
 
                 print('------------------END TRAINING------------------')

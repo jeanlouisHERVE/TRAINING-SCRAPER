@@ -6,9 +6,12 @@
 from dotenv import load_dotenv
 
 # own packages
+import config
 import database_app
 import add_trainings_crf
 
+database_name = config.get_database_name()
+database_app.create_database(database_name)
 database_app.create_tables()
 
 # get data from .env file

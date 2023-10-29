@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import configparser
 from configparser import ConfigParser
 
 
@@ -15,3 +16,15 @@ def config(filename='database.ini', section='postgresql'):
         raise Exception('Section {0} not found in the {1} file'.format(section, filename))
 
     return db
+
+
+def get_database_name(config_file="database.ini"):
+    config = configparser.ConfigParser()
+    config.read(config_file)
+
+    if "postgresql" in config:
+        db_config = config["postgresql"]
+        db_name = db_config.get("db_name")
+        return db_name
+    else:
+        raise ValueError("No 'database' section found in the configuration file.")

@@ -5,6 +5,7 @@ import psycopg2
 # other modules
 from dotenv import load_dotenv
 from config import config
+from psycopg2 import sql
 
 # get data from .env file
 load_dotenv()
@@ -135,6 +136,29 @@ DELETE_DEPARTMENTS_TABLE = "DELETE FROM departments;"
 DELETE_TOWNS_TABLE = "DELETE FROM towns;"
 DELETE_TYPES_TABLE = "DELETE FROM types;"
 DELETE_ORGANISMS_TABLE = "DELETE FROM organisms;"
+
+
+def create_database(db_name):
+    conn = None
+    try:
+        conn = connect_database(config_params)
+        conn.autocommit = True
+        cur = conn.cursor()
+        check_db_query = sql.SQL("SELECT 1 FROM pg_database WHERE datname = {}")
+        cur.execute(check_db_query)
+        if cur.fetchone():
+            print(f"Database '{db_name}' already exists.")
+        else:
+            # Create a new database
+            create_db_query = sql.SQL("CREATE DATABASE {}").format(sql.Identifier(db_name))
+            cur.execute(create_db_query)
+            print(f"Database '{db_name}' created successfully!")
+    except psycopg2.Error as e:
+        print(f"Error: {e}")
+
+    finally:
+        if conn:
+            conn.close()
 
 
 def create_tables():
