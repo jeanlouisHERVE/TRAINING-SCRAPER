@@ -15,6 +15,7 @@ config_params = config()
 
 
 def connect_database(config_params):
+    print("config_params", config_params)
     try:
         connection = psycopg2.connect(**config_params)
         return connection
@@ -22,7 +23,51 @@ def connect_database(config_params):
         raise ConnectionError(f"Database connection failed: {e}")
 
 
-# create database
+def create_superuser(username, password):
+    conn = None
+    try:
+        conn = connect_database(config_params)
+        conn.autocommit = True
+        cur = conn.cursor()
+
+        # Create the superuser
+        create_superuser_query = sql.SQL(
+                    "CREATE ROLE {} WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD {}").format(
+            sql.Identifier(username), sql.Identifier(password)
+        )
+        cur.execute(create_superuser_query)
+
+        print(f"Superuser '{username}' created successfully!")
+    except psycopg2.Error as e:
+        print(f"Error: {e}")
+    finally:
+        if conn:
+            conn.close()
+
+
+def create_database(db_name):
+    conn = None
+    try:
+        conn = connect_database(config_params)
+        conn.autocommit = True
+        cur = conn.cursor()
+        check_db_query = sql.SQL("SELECT 1 FROM pg_database WHERE datname = {}")
+        cur.execute(check_db_query)
+        if cur.fetchone():
+            print(f"Database '{db_name}' already exists.")
+        else:
+            # Create a new database
+            create_db_query = sql.SQL("CREATE DATABASE {}").format(sql.Identifier(db_name))
+            cur.execute(create_db_query)
+            print(f"Database '{db_name}' created successfully!")
+    except psycopg2.Error as e:
+        print(f"Error: {e}")
+    finally:
+        if conn:
+            conn.close()
+
+
+# create tables
 CREATE_COURSES_TABLE = """CREATE TABLE IF NOT EXISTS courses (
                                 id SERIAL NOT NULL PRIMARY KEY,
                                 places_available INTEGER,
@@ -136,28 +181,6 @@ DELETE_DEPARTMENTS_TABLE = "DELETE FROM departments;"
 DELETE_TOWNS_TABLE = "DELETE FROM towns;"
 DELETE_TYPES_TABLE = "DELETE FROM types;"
 DELETE_ORGANISMS_TABLE = "DELETE FROM organisms;"
-
-
-def create_database(db_name):
-    conn = None
-    try:
-        conn = connect_database(config_params)
-        conn.autocommit = True
-        cur = conn.cursor()
-        check_db_query = sql.SQL("SELECT 1 FROM pg_database WHERE datname = {}")
-        cur.execute(check_db_query)
-        if cur.fetchone():
-            print(f"Database '{db_name}' already exists.")
-        else:
-            # Create a new database
-            create_db_query = sql.SQL("CREATE DATABASE {}").format(sql.Identifier(db_name))
-            cur.execute(create_db_query)
-            print(f"Database '{db_name}' created successfully!")
-    except psycopg2.Error as e:
-        print(f"Error: {e}")
-    finally:
-        if conn:
-            conn.close()
 
 
 def create_tables():

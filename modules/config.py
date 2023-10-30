@@ -24,7 +24,20 @@ def get_database_name(config_file="database.ini"):
 
     if "postgresql" in config:
         db_config = config["postgresql"]
-        db_name = db_config.get("db_name")
+        db_name = db_config.get("database")
         return db_name
+    else:
+        raise ValueError("No 'postgresql' section found in the configuration file.")
+
+
+def get_superuser_informations(config_file="database.ini"):
+    config = configparser.ConfigParser()
+    config.read(config_file)
+
+    if "postgresql" in config:
+        db_config = config["postgresql"]
+        user_name = db_config.get("user")
+        user_password = db_config.get("password")
+        return user_name, user_password
     else:
         raise ValueError("No 'postgresql' section found in the configuration file.")

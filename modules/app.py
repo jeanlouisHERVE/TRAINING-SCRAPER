@@ -11,6 +11,8 @@ import database_app
 import add_trainings_crf
 
 database_name = config.get_database_name()
+username, password = config.get_superuser_informations()
+database_app.create_superuser(username, password)
 database_app.create_database(database_name)
 database_app.create_tables()
 
