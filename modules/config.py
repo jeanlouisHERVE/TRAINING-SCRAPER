@@ -27,4 +27,4 @@ def get_database_name(config_file="database.ini"):
         db_name = db_config.get("db_name")
         return db_name
     else:
-        raise ValueError("No 'database' section found in the configuration file.")
+        raise ValueError("No 'postgresql' section found in the configuration file.")

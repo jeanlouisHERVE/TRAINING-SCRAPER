@@ -155,7 +155,6 @@ def create_database(db_name):
             print(f"Database '{db_name}' created successfully!")
     except psycopg2.Error as e:
         print(f"Error: {e}")
-
     finally:
         if conn:
             conn.close()
