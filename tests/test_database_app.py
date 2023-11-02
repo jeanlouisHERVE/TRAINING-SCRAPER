@@ -186,13 +186,28 @@ if __name__ == '__main__':
 
     # Define the order of tests
     ordered_tests = [
-        "test_add_course",
-        "test_add_date",
-        "test_add_training",
-        "test_add_department",
-        "test_add_town",
-        "test_add_organism",
-    ]
+            "test_add_course",
+            "test_add_date",
+            "test_add_course_date_time",
+            "test_add_department",
+            "test_add_town",
+            "test_add_type",
+            "test_add_organism",
+            "test_get_courses",
+            "test_get_course_id",
+            "test_get_dates",
+            "test_get_date",
+            "test_get_course_date_time",
+            "test_get_departments",
+            "test_get_department_from_number",
+            "test_get_towns",
+            "test_get_town_from_name",
+            "test_get_types",
+            "test_get_type_from_name",
+            "test_get_organisms",
+            "test_get_organism_from_name",
+            "test_course_exists",
+            ]
 
     test_instance = TestDatabaseFunctions()
     ordered_suite = unittest.TestSuite()
