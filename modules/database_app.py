@@ -184,14 +184,13 @@ DELETE_ORGANISMS_TABLE = "DELETE FROM organisms;"
 
 
 def create_tables():
-    commands = (CREATE_DATES_TABLE,
+    commands = (CREATE_COURSES_TABLE,
                 CREATE_DATES_TABLE,
                 CREATE_COURSE_DATE_TIME,
                 CREATE_DEPARTMENTS_TABLE,
                 CREATE_TOWNS_TABLE,
                 CREATE_TYPES_TABLE,
-                CREATE_ORGANISMS_TABLE,
-                CREATE_COURSES_TABLE)
+                CREATE_ORGANISMS_TABLE)
     conn = None
     try:
         conn = connect_database(config_params)

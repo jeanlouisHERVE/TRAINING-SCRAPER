@@ -12,12 +12,22 @@ from modules.database_app import (
     add_date,
     add_department,
     add_town,
+    add_type,
     add_organism,
     get_courses,
+    get_course_id,
+    get_course_date_time,
+    get_date,
     get_dates,
     get_departments,
+    get_department_from_number,
     get_towns,
-    get_organisms
+    get_town_from_name,
+    get_types,
+    get_type_from_name,
+    get_organisms,
+    get_organism_from_name,
+    course_exists,
 )
 
 # TODO adapt to postgresql
@@ -59,15 +69,17 @@ class TestDatabaseFunctions(unittest.TestCase):
             print("------TEST END : ENSURE DATABASE IS CLEANED--------")
             courses = get_courses()
             dates = get_dates()
-            trainings = get_trainings()
+            course_date_time = get_course_date_time()
             departments = get_departments()
             towns = get_towns()
+            types = get_types()
             organisms = get_organisms()
             print("get_courses", courses)
             print("get_dates", dates)
-            print("get_trainings", trainings)
+            print("get_course_date_time", course_date_time)
             print("get_departments", departments)
             print("get_towns", towns)
+            print("get_types", types)
             print("get_organisms", organisms)
             print("-------------------------------------------------------")
             print("-------------------------------------------------------")
