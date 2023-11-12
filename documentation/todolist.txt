@@ -20,4 +20,4 @@ Mise en place de l'architecture
     psql -U postgres -d postgres
     \dt : consulter les tables
 
-    test
+=> TODO ssh add to github gitlab
