@@ -19,3 +19,6 @@ Mise en place de l'architecture
     psql -U myuser -d mydb : se connecter à une db 
     psql -U postgres -d postgres
     \dt : consulter les tables
+
+=> TODO ssh add to github gitlab
+    install psql ubuntu : sudo apt install postgresql postgresql-contrib
