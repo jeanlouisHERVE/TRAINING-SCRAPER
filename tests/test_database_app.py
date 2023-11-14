@@ -52,37 +52,37 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.cur = self.conn.cursor()
         create_tables()
 
-    def tearDown(self):
-        try:
-            # Reset the database before closing the connection
-            print("Resetting database")
-            delete_tables()
-        except Exception as e:
-            print(f"Error resetting the database: {e}")
-        finally:
-            # Close the database connection
-            print("Closing database")
-            self.cur.close()
-            self.conn.close()
-            self.db.terminate()
-            self.db.wait()
-            print("------TEST END : ENSURE DATABASE IS CLEANED--------")
-            courses = get_courses()
-            dates = get_dates()
-            course_date_time = get_course_date_time()
-            departments = get_departments()
-            towns = get_towns()
-            types = get_types()
-            organisms = get_organisms()
-            print("get_courses", courses)
-            print("get_dates", dates)
-            print("get_course_date_time", course_date_time)
-            print("get_departments", departments)
-            print("get_towns", towns)
-            print("get_types", types)
-            print("get_organisms", organisms)
-            print("-------------------------------------------------------")
-            print("-------------------------------------------------------")
+    # def tearDown(self):
+    #     try:
+    #         # Reset the database before closing the connection
+    #         print("Resetting database")
+    #         delete_tables()
+    #     except Exception as e:
+    #         print(f"Error resetting the database: {e}")
+    #     finally:
+    #         # Close the database connection
+    #         print("Closing database")
+    #         self.cur.close()
+    #         self.conn.close()
+    #         self.db.terminate()
+    #         self.db.wait()
+    #         print("------TEST END : ENSURE DATABASE IS CLEANED--------")
+    #         courses = get_courses()
+    #         dates = get_dates()
+    #         course_date_time = get_course_date_time()
+    #         departments = get_departments()
+    #         towns = get_towns()
+    #         types = get_types()
+    #         organisms = get_organisms()
+    #         print("get_courses", courses)
+    #         print("get_dates", dates)
+    #         print("get_course_date_time", course_date_time)
+    #         print("get_departments", departments)
+    #         print("get_towns", towns)
+    #         print("get_types", types)
+    #         print("get_organisms", organisms)
+    #         print("-------------------------------------------------------")
+    #         print("-------------------------------------------------------")
 
     def test_add_course(self):
         # Test with valid input
